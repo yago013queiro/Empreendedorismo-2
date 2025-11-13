@@ -9,7 +9,7 @@ export default async function handler(req, res) {
     const GEMINI_API_KEY = process.env.GEMINI_API_KEY;
 
     const response = await fetch(
-      "https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=" + GEMINI_API_KEY,
+      "https://generativelanguage.googleapis.com/v1/models/gemini-1.5-flash:generateContent?key=" + GEMINI_API_KEY,
       {
         method: "POST",
         headers: {
@@ -27,16 +27,12 @@ export default async function handler(req, res) {
 
     const data = await response.json();
 
-    // ===============================
-    // 🔴 DEBUG LOG — MUITO IMPORTANTE
-    // ===============================
     console.log("RESPOSTA BRUTA DO GEMINI:", JSON.stringify(data, null, 2));
 
     const text =
-      data?.candidates?.[0]?.content?.parts?.[0]?.text ||
-      null;
+      data?.candidates?.[0]?.content?.parts?.[0]?.text || null;
 
-    return res.status(200).json({ text, raw: data }); // retornando data também
+    return res.status(200).json({ text });
 
   } catch (error) {
     console.error("Erro na IA:", error);
