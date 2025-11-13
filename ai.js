@@ -1,37 +1,26 @@
-const GEMINI_API_KEY = "AIzaSyC0uUbZQcSlMc7jJwiP3DJjWj7eUz0-wew";
+// ===============================
+//  MENTECH.AI — Conexão via backend seguro (Vercel)
+// ===============================
+
+// Chama o endpoint seguro da Vercel
 async function askGemini(prompt) {
   try {
-    const body = {
-      contents: [{ parts: [{ text: prompt }] }]
-    };
-
-    const res = await fetch(
-      "https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash-latest:generateContent?key=" + GEMINI_API_KEY,
-      {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(body)
-      }
-    );
+    const res = await fetch("/api/ask", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ prompt })
+    });
 
     const data = await res.json();
-
-    // Extrai o texto gerado
-    const text = data?.candidates?.[0]?.content?.parts?.[0]?.text;
-    return text || null;
+    return data.text || "Não entendi a resposta da IA.";
   } catch (err) {
-    console.error("Erro ao conectar à IA:", err);
+    console.error("Erro ao conectar com a IA:", err);
     return null;
   }
 }
 
-// === Verifica se a IA está online ===
+// Testa se o servidor responde
 async function checkIAStatus() {
-  try {
-    const test = await askGemini("teste rápido");
-    // Se retornou alguma resposta de texto, considera OK
-    return !!test;
-  } catch {
-    return false;
-  }
+  const test = await askGemini("teste rápido");
+  return test !== null;
 }
