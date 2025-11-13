@@ -27,11 +27,16 @@ export default async function handler(req, res) {
 
     const data = await response.json();
 
+    // ===============================
+    // 🔴 DEBUG LOG — MUITO IMPORTANTE
+    // ===============================
+    console.log("RESPOSTA BRUTA DO GEMINI:", JSON.stringify(data, null, 2));
+
     const text =
       data?.candidates?.[0]?.content?.parts?.[0]?.text ||
-      "A IA não retornou texto 🤖💀";
+      null;
 
-    return res.status(200).json({ text });
+    return res.status(200).json({ text, raw: data }); // retornando data também
 
   } catch (error) {
     console.error("Erro na IA:", error);
