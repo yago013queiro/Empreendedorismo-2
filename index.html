@@ -391,6 +391,15 @@ int main() {
 
   /* ========== Navegação ========== */
   function goToPage(id){
+  document.querySelectorAll('.page').forEach(p=>{
+    p.classList.remove('active');
+    if(p.id===id) p.classList.add('active');
+  });
+  updateChips();
+  window.scrollTo({ top:0, behavior:'smooth' });
+  if(id==='page-chat') startChatIntro();
+}
+  function goToPage(id){
     pages().forEach(p => {
       p.classList.remove('active','page-in','page-out');
       if (p.id === id) p.classList.add('active','page-in'); else p.classList.add('page-out');
