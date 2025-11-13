@@ -448,65 +448,63 @@ int main() {
 
   function copyCode(){ const txt = langCode.textContent; navigator.clipboard?.writeText(txt).then(()=> alert('Código copiado!')).catch(()=> alert('Não foi possível copiar.')) }
   function proceedFromOverlay(){ overlay.classList.remove('open'); overlay.setAttribute('aria-hidden','true'); goToPage('page-nivel'); }
+/* ========== Chat real com IA ========== */
+const chatBox = document.getElementById('chat-box');
+const input = document.getElementById('user-input');
+const sendBtn = document.getElementById('send-btn');
 
-  /* ========== Chat simulado ========== */
-  const chatBox = document.getElementById('chat-box');
-  const input = document.getElementById('user-input');
-  const sendBtn = document.getElementById('send-btn');
-
-  function addMessage(text, who='ai'){
-    if (!chatBox) return;
-    const wrapper = document.createElement('div'); wrapper.className = 'message ' + who;
-    const bubble = document.createElement('div'); bubble.className = 'bubble';
-    bubble.innerHTML = '<p>' + text.replace(/\\n/g,'<br>') + '</p>';
-    if (who === 'ai'){ wrapper.innerHTML = '<div class="avatar-mini">🤖</div>'; wrapper.appendChild(bubble); }
-    else wrapper.appendChild(bubble);
-    chatBox.appendChild(wrapper); chatBox.scrollTop = chatBox.scrollHeight;
+function addMessage(text, who='ai') {
+  if (!chatBox) return;
+  const wrapper = document.createElement('div');
+  wrapper.className = 'message ' + who;
+  const bubble = document.createElement('div');
+  bubble.className = 'bubble';
+  bubble.innerHTML = '<p>' + text.replace(/\n/g, '<br>') + '</p>';
+  if (who === 'ai') {
+    wrapper.innerHTML = '<div class="avatar-mini">🤖</div>';
+    wrapper.appendChild(bubble);
+  } else {
+    wrapper.appendChild(bubble);
   }
+  chatBox.appendChild(wrapper);
+  chatBox.scrollTop = chatBox.scrollHeight;
+}
 
-  function simulateTyping(callback, time=900){
-    if (!chatBox) return;
-    const t = document.createElement('div'); t.className='typing'; t.textContent='Digitando...';
-    chatBox.appendChild(t); chatBox.scrollTop = chatBox.scrollHeight;
-    setTimeout(()=>{ t.remove(); callback(); }, time);
+function simulateTyping(callback, time = 900) {
+  if (!chatBox) return;
+  const t = document.createElement('div');
+  t.className = 'typing';
+  t.textContent = 'Digitando...';
+  chatBox.appendChild(t);
+  chatBox.scrollTop = chatBox.scrollHeight;
+  setTimeout(() => { t.remove(); callback(); }, time);
+}
+
+async function sendMessage() {
+  if (!input) return;
+  const txt = input.value.trim();
+  if (!txt) return;
+  addMessage(txt, 'user');
+  input.value = '';
+  simulateTyping(async () => {
+    const resp = await askGemini(txt);
+    if (!resp) {
+      addMessage("❌ Não consegui conectar à IA. Tente novamente mais tarde.", 'ai');
+    } else {
+      addMessage(resp, 'ai');
+    }
+  }, 1200);
+}
+
+async function startChatIntro() {
+  if (!chatBox) return;
+  if (chatBox.children.length < 1) {
+    simulateTyping(async () => {
+      const ok = await checkIAStatus();
+      if (ok) addMessage("OOlá! Estou aqui para ajudar. Pergunte qualquer coisa.", 'ai');
+    }, 900);
   }
-
-  // respostas "variadas" com intro quando é programação
-  function fakeApiResponse(prompt){
-    if (!state.area) return "Por favor, selecione sua área antes de usar o chat.";
-    if (state.area === 'materias') return `📚 (Matérias - Geral) Sobre "${prompt}": resumo conciso + exemplo curto.`;
-    if (state.area === 'estudo') return `🕒 (Dicas) Para "${prompt}": Pomodoro, resumos, revisão espaçada.`;
-    // programação:
-    const lang = (state.linguagem || '').toLowerCase();
-    const intro = `Sua pergunta é ótima — vamos analisar: posso explicar o conceito, mostrar um exemplo e sugerir exercícios.\n\n`;
-    if (lang === 'c') return intro + `Exemplo em C:\n\n#include <stdio.h>\nint main(){ printf("Olá, MAINTECH!\\n"); return 0; }`;
-    if (lang === 'java') return intro + `Exemplo em Java:\n\npublic class Main{ public static void main(String[] a){ System.out.println("Olá, MAINTECH!"); } }`;
-    if (lang === 'python') return intro + `Exemplo em Python:\n\nprint("Olá, MAINTECH!")`;
-    return intro + `Resposta geral: ${prompt}`;
-  }
-
-  function sendMessage(){
-    if (!input) return;
-    const txt = input.value.trim(); if (!txt) return;
-    addMessage(txt,'user'); input.value='';
-    simulateTyping(()=> { const resp = fakeApiResponse(txt); addMessage(resp,'ai'); }, 1200);
-  }
-
-  function clearChat(){ if (!chatBox) return; chatBox.innerHTML = ''; addMessage('Chat limpo. Pergunte algo!', 'ai'); }
-
-  function startChatIntro(){
-    if (!chatBox) return;
-    // se estiver vazio (apenas a mensagem inicial), mostra um typing breve
-    if (chatBox.children.length <= 1) simulateTyping(()=> addMessage('Pronto — me pergunte qualquer coisa!', 'ai'), 900);
-  }
-
-  // fluxo ao clicar em Chat no topo
-  function prepareChat(){
-    if (!state.area){ alert('Escolha antes a área (Programação / Outras matérias / Dicas).'); goToPage('page-escolha'); return; }
-    if (state.area === 'programacao' && !state.linguagem){ alert('Escolha a linguagem (C, Java ou Python) antes de usar o chat.'); goToPage('page-programacao'); return; }
-    if (!state.nivel){ goToPage('page-nivel'); return; }
-    goToPage('page-chat');
-  }
+}
 
   /* ========== Inicialização de controles (tema, fonte, logo) ========== */
   document.addEventListener('DOMContentLoaded', ()=> {
@@ -533,7 +531,7 @@ int main() {
     // inits
     updateChips();
   });
+  <script src="ai.js"></script>
   </script>
 </body>
 </html>
-
