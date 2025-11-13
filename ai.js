@@ -1,20 +1,26 @@
+// ===============================
+//   MENTECH.AI - CLIENTE (Frontend)
+//   Chama o backend seguro da Vercel
+// ===============================
+
 async function askGemini(prompt) {
   try {
     const res = await fetch("/api/ask", {
-  method: "POST",
-  headers: { "Content-Type": "application/json" },
-  body: JSON.stringify({ prompt })
-});
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ prompt })
+    });
+
     const data = await res.json();
-    return data.text || "Não entendi a resposta da IA.";
+    return data.text || null;
+
   } catch (err) {
-    console.error("Erro ao conectar com a IA:", err);
+    console.error("Erro IA:", err);
     return null;
   }
 }
 
-// Testa se o servidor responde
 async function checkIAStatus() {
-  const test = await askGemini("teste rápido");
-  return test !== null;
+  const teste = await askGemini("teste rápido");
+  return teste !== null;
 }
