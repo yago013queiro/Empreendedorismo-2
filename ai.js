@@ -1,16 +1,10 @@
-// ===============================
-//  MENTECH.AI — Conexão via backend seguro (Vercel)
-// ===============================
-
-// Chama o endpoint seguro da Vercel
 async function askGemini(prompt) {
   try {
     const res = await fetch("/api/ask", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ prompt })
-    });
-
+  method: "POST",
+  headers: { "Content-Type": "application/json" },
+  body: JSON.stringify({ prompt })
+});
     const data = await res.json();
     return data.text || "Não entendi a resposta da IA.";
   } catch (err) {

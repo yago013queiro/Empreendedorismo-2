@@ -1,7 +1,12 @@
-// api/ask.js
+// api/ask.js — versão correta para Vercel Serverless
+
 export default async function handler(req, res) {
+  if (req.method !== "POST") {
+    return res.status(405).json({ error: "Método não permitido." });
+  }
+
   try {
-    const { prompt } = await req.json();
+    const { prompt } = req.body;  // <<< AQUI É O CERTO NA VERCEL
 
     const GEMINI_API_KEY = process.env.GEMINI_API_KEY;
 
@@ -18,10 +23,14 @@ export default async function handler(req, res) {
 
     const data = await response.json();
 
-    const text = data?.candidates?.[0]?.content?.parts?.[0]?.text || "Sem resposta.";
+    const text =
+      data?.candidates?.[0]?.content?.parts?.[0]?.text ||
+      "A IA não retornou texto.";
+
     return res.status(200).json({ text });
+
   } catch (error) {
     console.error("Erro na IA:", error);
-    return res.status(500).json({ error: "Falha ao conectar à IA" });
+    return res.status(500).json({ error: "Falha ao conectar à IA." });
   }
 }
