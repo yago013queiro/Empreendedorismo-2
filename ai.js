@@ -1,3 +1,8 @@
+// ===============================
+// MENTECH.AI - CLIENTE (Frontend)
+// Chama o backend da Vercel
+// ===============================
+
 async function askGemini(prompt) {
   try {
     const res = await fetch("/api/ask", {
@@ -10,7 +15,7 @@ async function askGemini(prompt) {
     return data.text || null;
 
   } catch (err) {
-    console.error("Erro IA:", err);
+    console.error("❌ Erro IA (frontend):", err);
     return null;
   }
 }

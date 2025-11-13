@@ -1,3 +1,7 @@
+// ===============================
+// MENTECH.AI - BACKEND (VERCEL)
+// ===============================
+
 export default async function handler(req, res) {
   if (req.method !== "POST") {
     return res.status(405).json({ error: "Método não permitido." });
@@ -8,8 +12,14 @@ export default async function handler(req, res) {
 
     const GEMINI_API_KEY = process.env.GEMINI_API_KEY;
 
+    // VERIFICA SE A KEY EXISTE
+    if (!GEMINI_API_KEY) {
+      console.error("❌ A VARIÁVEL GEMINI_API_KEY NÃO FOI CARREGADA");
+      return res.status(500).json({ error: "API KEY ausente no servidor" });
+    }
+
     const response = await fetch(
-      "https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash-latest:generateContent?key=" + GEMINI_API_KEY,
+      `https://generativelanguage.googleapis.com/v1beta/models/gemini-pro:generateContent?key=${GEMINI_API_KEY}`,
       {
         method: "POST",
         headers: {
@@ -27,7 +37,7 @@ export default async function handler(req, res) {
 
     const data = await response.json();
 
-    console.log("RESPOSTA BRUTA DO GEMINI:", JSON.stringify(data, null, 2));
+    console.log("🔥 RESPOSTA BRUTA DO GEMINI:", JSON.stringify(data, null, 2));
 
     const text =
       data?.candidates?.[0]?.content?.parts?.[0]?.text || null;
@@ -35,7 +45,7 @@ export default async function handler(req, res) {
     return res.status(200).json({ text });
 
   } catch (error) {
-    console.error("Erro na IA:", error);
+    console.error("❌ ERRO NO BACKEND:", error);
     return res.status(500).json({ error: "Falha ao conectar à IA." });
   }
 }
