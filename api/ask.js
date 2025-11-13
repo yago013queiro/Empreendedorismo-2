@@ -1,51 +1,45 @@
-// ===============================
-// MENTECH.AI - BACKEND (VERCEL)
-// ===============================
-
 export default async function handler(req, res) {
-  if (req.method !== "POST") {
-    return res.status(405).json({ error: "Método não permitido." });
+  if (req.method !== 'POST') {
+    return res.status(405).json({ error: 'Método não permitido.' });
   }
 
   try {
-    const { prompt } = req.body;
+    const { prompt, context } = req.body || {};
 
     const GEMINI_API_KEY = process.env.GEMINI_API_KEY;
+    const GEMINI_MODEL = process.env.GEMINI_MODEL || "gemini-1.5-flash";
 
-    // VERIFICA SE A KEY EXISTE
-    if (!GEMINI_API_KEY) {
-      console.error("❌ A VARIÁVEL GEMINI_API_KEY NÃO FOI CARREGADA");
-      return res.status(500).json({ error: "API KEY ausente no servidor" });
-    }
+    const endpoint = `https://generativelanguage.googleapis.com/v1/models/${GEMINI_MODEL}:generateContent?key=${GEMINI_API_KEY}`;
 
-    const response = await fetch(
-      `https://generativelanguage.googleapis.com/v1beta/models/gemini-pro:generateContent?key=${GEMINI_API_KEY}`,
-      {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json"
-        },
-        body: JSON.stringify({
-          contents: [
-            {
-              parts: [{ text: prompt }]
-            }
-          ]
-        })
-      }
-    );
+    const body = {
+      contents: [
+        {
+          role: "user",
+          parts: [{ text: prompt }]
+        }
+      ]
+    };
 
-    const data = await response.json();
+    const r = await fetch(endpoint, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(body)
+    });
 
-    console.log("🔥 RESPOSTA BRUTA DO GEMINI:", JSON.stringify(data, null, 2));
+    const data = await r.json();
 
     const text =
-      data?.candidates?.[0]?.content?.parts?.[0]?.text || null;
+      data?.candidates?.[0]?.content?.parts?.[0]?.text ||
+      null;
+
+    if (!text) {
+      return res.status(500).json({ error: "Resposta inesperada", raw: data });
+    }
 
     return res.status(200).json({ text });
 
-  } catch (error) {
-    console.error("❌ ERRO NO BACKEND:", error);
-    return res.status(500).json({ error: "Falha ao conectar à IA." });
+  } catch (err) {
+    console.error(err);
+    return res.status(500).json({ error: "Falha no servidor" });
   }
 }
