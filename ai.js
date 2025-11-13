@@ -1,8 +1,3 @@
-// ===============================
-//   MENTECH.AI - CLIENTE (Frontend)
-//   Chama o backend seguro da Vercel
-// ===============================
-
 async function askGemini(prompt) {
   try {
     const res = await fetch("/api/ask", {
