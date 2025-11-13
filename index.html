@@ -1,0 +1,537 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>MENTECH.AI — Estudos & Programação</title>
+
+  
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;700&display=swap" rel="stylesheet">
+
+ 
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  
+  <header class="navbar">
+    <div class="brand" id="brand-logo" role="button" title="Ir para a página inicial">
+      <div class="logo-ico">🤖</div>
+      <div class="brand-text">MENTECH.IA<span>AI</span></div>
+    </div>
+
+    <div class="nav-actions">
+      <button id="toggle-theme" title="Trocar tema">🌗</button>
+      <button id="inc-font" title="Aumentar fonte">A+</button>
+      <button id="dec-font" title="Diminuir fonte">A-</button>
+      <nav class="mini-nav">
+        <button class="nav-link" onclick="goToPage('page-home')">Home</button>
+        <button class="nav-link" onclick="goToPage('page-areas')">Ver áreas</button>
+        <button class="nav-link" onclick="goToPage('page-escolha')">Escolher</button>
+        <button class="nav-link" id="nav-chat" onclick="prepareChat()">Chat</button>
+      </nav>
+    </div>
+  </header>
+
+ 
+  <main id="app">
+
+
+    <section class="page active" id="page-login" data-page="login">
+      <div class="panel center large">
+        <h2>Bem-vindo à <span>MENTECH.AI</span></h2>
+        <p class="muted">Crie uma conta ou siga como convidado</p>
+
+        <div class="auth-row">
+          <button class="btn large" onclick="goToPage('page-home')">Continuar como convidado</button>
+          <div class="or">ou</div>
+          <button class="btn outline" onclick="alert('Login visual — implementável depois')">Entrar com Google</button>
+        </div>
+
+        <small class="muted">Autenticação real não implementada (protótipo).</small>
+      </div>
+    </section>
+
+  
+    <section class="page" id="page-home" data-page="home">
+      <div class="hero big">
+        <div class="hero-left">
+          <h1>Bem-vindo(a) à <span>MENTECH.AI</span></h1>
+          <p class="lead">Explicações, Ensinamentos de linguagens de programação e dicas de estudos para estudantes. Escolha sua área e nós iremos ajuda-lo(a).</p>
+
+          <div class="hero-cta">
+            <button class="btn large" onclick="goToPage('page-areas')">Ver as áreas</button>
+            <button class="btn outline large" onclick="goToPage('page-escolha')">Começar</button>
+          </div>
+
+          <div class="home-cards">
+            <article class="home-card">
+              <img src="https://cdn.pixabay.com/photo/2016/11/19/14/00/code-1839406_1280.jpg" alt="programming">
+              <div>
+                <h4>Linguagem de Programação</h4>
+                <p>Iremos ensinar as diversas linguagens como C, Java e Python com explicações e praticas.</p>
+              </div>
+            </article>
+
+            <article class="home-card">
+              <img src="https://cdn.pixabay.com/photo/2017/08/10/07/50/books-2616466_1280.jpg" alt="estudo">
+              <div>
+                <h4>Outras matérias</h4>
+                <p>Conteúdo geral, de acordo com seu nivel de ensino. Ensina e lhe ajuda em suas duvidas.</p>
+              </div>
+            </article>
+
+            <article class="home-card">
+              <img src="https://cdn.pixabay.com/photo/2017/08/06/11/35/artificial-intelligence-2599475_1280.jpg" alt="ia">
+              <div>
+                <h4>Dicas de estudo</h4>
+                <p>Ajudaremos a ter uma melhor rotina, e criaremos resumos e organizações de conteudos para você.</p>
+              </div>
+            </article>
+          </div>
+        </div>
+
+        <div class="hero-right">
+          <div class="depth-box" aria-hidden="true">
+            <div class="depth-inner"></div>
+          </div>
+
+          <div class="hero-visual">
+            <img src="https://images.unsplash.com/photo-1542751371-adc38448a05e?q=80&w=1400&auto=format&fit=crop&ixlib=rb-4.0.3&s=2a0fefc7c1b8c1b8b8a9b1f3b4e7a7d1" alt="ai art">
+            <div class="hero-badges">
+              <span>✔️ Respostas bem elaboradas</span>
+              <span>⚡ Exemplos práticos</span>
+              <span>🎯 Focado em aprendizado</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    
+      <section class="home-section">
+        <h2>O que nós oferecemos?</h2>
+        <div class="features">
+          <div class="feature big">
+            <h3>Explicações passo a passo</h3>
+            <p>Ensinaremos oque você mais tem dificuldade, e tiraremos todas suas duvidas, para aprender facilmente. </p>
+          </div>
+          <div class="feature big">
+            <h3>Diversidade de Conteudos</h3>
+            <p>Aprenda a linguagem ou materia que você mais tem dificuldade facilmente.</p>
+          </div>
+          <div class="feature big">
+            <h3>Plano de estudos</h3>
+            <p>Modelos para planejar seus estudos com eficiência.</p>
+          </div>
+        </div>
+      </section>
+
+    
+      <section class="home-section">
+        <h2>Quem já usou</h2>
+        <div class="testimonials">
+          <div class="testi">
+            <p>"Eu aprendi diversas coisas com a MAINTECH, porem a que mais me ensinou foi os Laços de repetição em C!."</p>
+            <small>— Saimon Lincoln</small>
+          </div>
+          <div class="testi">
+            <p>"Aprendi o basico de Java e Python, sabendo apenas programar em C."</p>
+            <small>— João Pedro</small>
+          </div>
+        </div>
+      </section>
+
+  
+      <section class="home-section">
+        <h2>Perguntas frequentes</h2>
+        <div class="faq-grid">
+          <details><summary>Como a IA responde às perguntas?</summary><p>A Nossa IA, tem uma inteligencia propria, onde ela ira ser especifica para a determinada escolha que faça.</p></details>
+          <details><summary>Posso salvar conversas?</summary><p>Atualmente não, porem num futuro prospero, queremos adicionar tudo oque um estudante irá precisar.</p></details>
+        </div>
+      </section>
+    </section>
+
+  
+    <section class="page" id="page-escolha" data-page="escolha">
+      <h2>Escolha sua área</h2>
+      <p class="section-sub">Cada área leva a um fluxo separado da IA.</p>
+
+      <div class="grid-choices large">
+        <article class="choice-card" onclick="setArea('programacao'); goToPage('page-programacao')">
+          <img src="https://cdn.pixabay.com/photo/2016/11/19/14/00/code-1839406_1280.jpg" alt="Programação">
+          <h3>Programação</h3>
+          <p>Aprenda a programar com sua linguagem especifica.</p>
+        </article>
+
+        <article class="choice-card" onclick="setArea('materias'); goToPage('page-nivel')">
+          <img src="https://cdn.pixabay.com/photo/2016/03/27/07/08/blackboard-1282765_1280.jpg" alt="Outras matérias">
+          <h3>Outras matérias (Geral)</h3>
+          <p>Conteúdo geral, Matemática, Português etc. </p>
+        </article>
+
+        <article class="choice-card" onclick="setArea('estudo'); goToPage('page-dicas')">
+          <img src="https://cdn.pixabay.com/photo/2015/09/05/21/51/study-925589_1280.jpg" alt="Dicas de estudo">
+          <h3>Dicas de estudo</h3>
+          <p>Aprenda da melhor forma, como estudar corretamente.</p>
+        </article>
+      </div>
+
+      <div class="pager">
+        <button class="btn outline" onclick="goToPage('page-home')">← Voltar</button>
+      </div>
+    </section>
+
+   
+    <section class="page" id="page-areas" data-page="areas">
+      <h2>Todas as áreas</h2>
+      <p class="section-sub">Aqui apresentamos as áreas disponíveis — clique numa linguagem para saber mais.</p>
+
+      <div class="langs-grid">
+       
+        <div class="lang-card" data-lang="C" onmouseenter="hoverLang(this)" onmouseleave="unhoverLang(this)" onclick="openLangOverlay('C')">
+          <img src="https://cdn.pixabay.com/photo/2016/06/06/17/05/c-programming-1436536_1280.jpg" alt="C">
+          <div class="lang-info"><h3>C</h3><p>A linguagem C tem: Simplicidade, Sintaxe simples e de aprendizado rapido de entender.</p></div>
+        </div>
+
+      
+        <div class="lang-card" data-lang="Java" onmouseenter="hoverLang(this)" onmouseleave="unhoverLang(this)" onclick="openLangOverlay('Java')">
+          <img src="https://images.unsplash.com/photo-1547658719-da2b51169166?q=80&w=1400&auto=format&fit=crop&ixlib=rb-4.0.3&s=2f8d886e41b9bc2a6d8a7a4f1dfb4a50" alt="Java">
+          <div class="lang-info"><h3>Java</h3><p>A linguagem JAVA tem: Plataforma idependente, POO(Programação Orientada a Objeto), Robusto e linguagem mais complicada de entender.</p></div>
+        </div>
+
+       
+        <div class="lang-card" data-lang="Python" onmouseenter="hoverLang(this)" onmouseleave="unhoverLang(this)" onclick="openLangOverlay('Python')">
+          <img src="https://cdn.pixabay.com/photo/2015/01/08/18/29/entrepreneur-593358_1280.jpg" alt="Python">
+          <div class="lang-info"><h3>Python</h3><p>A linguagem PYTHON tem: Versátilidade, e a facilidade de entender, e tem a Sintaxe mais simples.</p></div>
+        </div>
+      </div>
+
+      <div class="pager">
+        <button class="btn outline" onclick="goToPage('page-home')">← Voltar</button>
+      </div>
+    </section>
+
+   
+    <section class="page" id="page-programacao" data-page="programacao">
+      <h2>Programação — Escolha a linguagem</h2>
+      <p class="section-sub">Clique para abrir detalhes.</p>
+
+      <div class="langs-grid">
+        <div class="lang-card" data-lang="C" onmouseenter="hoverLang(this)" onmouseleave="unhoverLang(this)" onclick="openLangOverlay('C')">
+          <img src="https://cdn.pixabay.com/photo/2016/06/06/17/05/c-programming-1436536_1280.jpg" alt="C language">
+          <div class="lang-info"><h3>C</h3><p>Simples E Rapido aprendizado.</p></div>
+        </div>
+
+        <div class="lang-card" data-lang="Java" onmouseenter="hoverLang(this)" onmouseleave="unhoverLang(this)" onclick="openLangOverlay('Java')">
+          <img src="https://images.unsplash.com/photo-1547658719-da2b51169166?q=80&w=1400&auto=format&fit=crop&ixlib=rb-4.0.3&s=2f8d886e41b9bc2a6d8a7a4f1dfb4a50" alt="Java">
+          <div class="lang-info"><h3>Java</h3><p>Dificultosa, porem Orientadada a Objetos.</p></div>
+        </div>
+
+        <div class="lang-card" data-lang="Python" onmouseenter="hoverLang(this)" onmouseleave="unhoverLang(this)" onclick="openLangOverlay('Python')">
+          <img src="https://cdn.pixabay.com/photo/2015/01/08/18/29/entrepreneur-593358_1280.jpg" alt="Python">
+          <div class="lang-info"><h3>Python</h3><p>Simples e versátil</p></div>
+        </div>
+      </div>
+
+      <div class="pager">
+        <button class="btn outline" onclick="goToPage('page-escolha')">← Voltar</button>
+      </div>
+    </section>
+
+    <!-- NÍVEL -->
+    <section class="page" id="page-nivel" data-page="nivel">
+      <h2>Qual seu nível?</h2>
+      <div class="nivel-grid">
+        <div class="nivel-card" onclick="setNivel('medio')">🎓 Ensino Médio</div>
+        <div class="nivel-card" onclick="setNivel('faculdade')">🏛️ Faculdade</div>
+      </div>
+
+      <div class="pager">
+        <button class="btn outline" onclick="goToPage('page-escolha')">← Voltar</button>
+        <button class="btn" onclick="goToPage('page-chat')">Ir para chat →</button>
+      </div>
+    </section>
+
+    <!-- DICAS -->
+    <section class="page" id="page-dicas" data-page="dicas">
+      <h2>Dicas de estudo</h2>
+      <div class="tips-grid">
+        <div class="tip"><h4>Tecnica Pomodoro</h4><p>Rotina de 25/5 — Com repitição de 4x.</p></div>
+        <div class="tip"><h4>Resumos</h4><p>Escreva com suas palavras, que dara um resumo explicativo.</p></div>
+        <div class="tip"><h4>Exercícios</h4><p>Resolva e entenda o erro.</p></div>
+      </div>
+
+      <div class="pager">
+        <button class="btn outline" onclick="goToPage('page-escolha')">← Voltar</button>
+        <button class="btn" onclick="goToPage('page-nivel')">Ir para Nível →</button>
+      </div>
+    </section>
+
+    <!-- CHAT -->
+    <section class="page" id="page-chat" data-page="chat">
+      <div class="chat-wrap large">
+        <header class="chat-top">
+          <div class="chat-title">
+            <div class="avatar">🤖</div>
+            <div>
+              <h3>MAINTECH.AI</h3>
+              <small class="chat-sub">Assistente de Estudos</small>
+            </div>
+          </div>
+
+          <div class="chat-info">
+            <div class="chip">Área: <span id="chip-area">—</span></div>
+            <div class="chip">Linguagem: <span id="chip-lang">—</span></div>
+            <div class="chip">Nível: <span id="chip-level">—</span></div>
+          </div>
+        </header>
+
+        <div class="chat-box" id="chat-box">
+          <div class="message ai">
+            <div class="avatar-mini">🤖</div>
+            <div class="bubble"><p>Olá! Eu sou a MENTECH.AI — Qual sua duvida?</p></div>
+          </div>
+        </div>
+
+        <div class="chat-input">
+          <input id="user-input" placeholder="Digite sua pergunta..." autocomplete="off">
+          <button id="send-btn">Enviar</button>
+        </div>
+
+        <div class="chat-actions">
+          <button class="btn outline" onclick="goToPage('page-escolha')">Escolher novamente</button>
+          <button class="btn danger" onclick="clearChat()">Limpar chat</button>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- Language overlay (fullscreen) -->
+  <div id="lang-overlay" class="lang-overlay" aria-hidden="true">
+    <div class="lang-panel">
+      <button class="close" onclick="closeLangOverlay()">✕</button>
+      <div class="lang-header">
+        <img id="lang-img" src="" alt="">
+        <div>
+          <h2 id="lang-title"></h2>
+          <p id="lang-desc"></p>
+        </div>
+      </div>
+
+      <div class="lang-body">
+        <div class="lang-examples">
+          <h4>Exemplo de código</h4>
+          <pre id="lang-code" class="code-box"></pre>
+          <div class="lang-actions">
+            <button class="btn" onclick="copyCode()">Copiar código</button>
+            <button class="btn outline" onclick="proceedFromOverlay()">Prosseguir (escolher nível)</button>
+          </div>
+        </div>
+
+        <div class="lang-more">
+          <h4>O que você vai aprender</h4>
+          <ul id="lang-points"></ul>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <footer class="site-footer">
+    <small>© 2025 MENTECH.AI —  Equipe 1° Informatica</small>
+  </footer>
+
+  <!-- JS embutido (logica de navegação, overlay, chat simulado) -->
+  <script>
+  /* ========== Estado e dados ========== */
+  const state = { area: null, linguagem: null, nivel: null };
+
+  const LANG_DATA = {
+    "C": {
+      title: "C — Linguagem C",
+      img: "https://cdn.pixabay.com/photo/2016/06/06/17/05/c-programming-1436536_1280.jpg",
+      desc: "C é clássica, ótima para entender lógica e memória. Excelente para sistemas e fundamentos.",
+      points: ["Sintaxe básica", "Ponteiros e memória", "Funções e estruturas", "Compilação com gcc"],
+      code: `#include <stdio.h>
+
+int main() {
+  printf("Olá, MAINTECH!\\n");
+  return 0;
+}`
+    },
+    "Java": {
+      title: "Java — Linguagem Java",
+      img: "https://images.unsplash.com/photo-1547658719-da2b51169166?q=80&w=1400&auto=format&fit=crop&ixlib=rb-4.0.3&s=2f8d886e41b9bc2a6d8a7a4f1dfb4a50",
+      desc: "Java é orientada a objetos, usada em aplicações e servidores — ótima para OOP.",
+      points: ["Classes e objetos","Herança e polimorfismo","Coleções","Compilação com javac"],
+      code: `public class Main {
+  public static void main(String[] args) {
+    System.out.println("Olá, MAINTECH!");
+  }
+}`
+    },
+    "Python": {
+      title: "Python — Linguagem Python",
+      img: "https://cdn.pixabay.com/photo/2015/01/08/18/29/entrepreneur-593358_1280.jpg",
+      desc: "Python é simples e poderosa — ideal para iniciantes e scripts rápidos.",
+      points: ["Sintaxe simples","Bibliotecas ricas","Interpretação imediata","Ideal para protótipos"],
+      code: `print("Olá, MAINTECH!")`
+    }
+  };
+
+  /* ========== DOM helpers ========== */
+  const pages = () => document.querySelectorAll('.page');
+  const overlay = document.getElementById('lang-overlay');
+  const langTitle = document.getElementById('lang-title');
+  const langDesc = document.getElementById('lang-desc');
+  const langImg = document.getElementById('lang-img');
+  const langCode = document.getElementById('lang-code');
+  const langPoints = document.getElementById('lang-points');
+
+  /* ========== Navegação ========== */
+  function goToPage(id){
+    pages().forEach(p => {
+      p.classList.remove('active','page-in','page-out');
+      if (p.id === id) p.classList.add('active','page-in'); else p.classList.add('page-out');
+    });
+    updateChips();
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+    if (id === 'page-chat') startChatIntro();
+  }
+
+  function setArea(a){ state.area = a; updateChips(); }
+  function setLinguagem(l){ state.linguagem = l; updateChips(); }
+  function setNivel(n){ state.nivel = n; updateChips(); }
+
+  function updateChips(){
+    const area = document.getElementById('chip-area');
+    const lang = document.getElementById('chip-lang');
+    const level = document.getElementById('chip-level');
+    if (area) area.textContent = state.area || '—';
+    if (lang) lang.textContent = state.linguagem || '—';
+    if (level) level.textContent = state.nivel || '—';
+  }
+
+  /* ========== Hover visual ========== */
+  function hoverLang(el){ el.style.transform = 'scale(1.03)'; el.style.zIndex = 5; }
+  function unhoverLang(el){ el.style.transform = ''; el.style.zIndex = ''; }
+
+  /* ========== Overlay linguagem ========== */
+  function openLangOverlay(key){
+    const data = LANG_DATA[key];
+    if (!data) return;
+    langTitle.textContent = data.title;
+    langDesc.textContent = data.desc;
+    langImg.src = data.img;
+    langCode.textContent = '';
+    langPoints.innerHTML = '';
+    data.points.forEach(p => { const li = document.createElement('li'); li.textContent = p; langPoints.appendChild(li); });
+
+    overlay.classList.add('open'); overlay.setAttribute('aria-hidden','false');
+
+    // anima digitação do código
+    let i = 0; const codeStr = data.code;
+    (function step(){
+      if (i <= codeStr.length){ langCode.textContent = codeStr.slice(0,i); i++; setTimeout(step, 10); }
+    })();
+
+    // grava linguagem no estado
+    state.linguagem = key; updateChips();
+  }
+
+  function closeLangOverlay(){
+    overlay.classList.remove('open'); overlay.setAttribute('aria-hidden','true');
+    // conforme seu pedido: ao fechar overlay (quando veio de Ver áreas) queremos voltar ao HOME
+    goToPage('page-home');
+  }
+
+  function copyCode(){ const txt = langCode.textContent; navigator.clipboard?.writeText(txt).then(()=> alert('Código copiado!')).catch(()=> alert('Não foi possível copiar.')) }
+  function proceedFromOverlay(){ overlay.classList.remove('open'); overlay.setAttribute('aria-hidden','true'); goToPage('page-nivel'); }
+
+  /* ========== Chat simulado ========== */
+  const chatBox = document.getElementById('chat-box');
+  const input = document.getElementById('user-input');
+  const sendBtn = document.getElementById('send-btn');
+
+  function addMessage(text, who='ai'){
+    if (!chatBox) return;
+    const wrapper = document.createElement('div'); wrapper.className = 'message ' + who;
+    const bubble = document.createElement('div'); bubble.className = 'bubble';
+    bubble.innerHTML = '<p>' + text.replace(/\\n/g,'<br>') + '</p>';
+    if (who === 'ai'){ wrapper.innerHTML = '<div class="avatar-mini">🤖</div>'; wrapper.appendChild(bubble); }
+    else wrapper.appendChild(bubble);
+    chatBox.appendChild(wrapper); chatBox.scrollTop = chatBox.scrollHeight;
+  }
+
+  function simulateTyping(callback, time=900){
+    if (!chatBox) return;
+    const t = document.createElement('div'); t.className='typing'; t.textContent='Digitando...';
+    chatBox.appendChild(t); chatBox.scrollTop = chatBox.scrollHeight;
+    setTimeout(()=>{ t.remove(); callback(); }, time);
+  }
+
+  // respostas "variadas" com intro quando é programação
+  function fakeApiResponse(prompt){
+    if (!state.area) return "Por favor, selecione sua área antes de usar o chat.";
+    if (state.area === 'materias') return `📚 (Matérias - Geral) Sobre "${prompt}": resumo conciso + exemplo curto.`;
+    if (state.area === 'estudo') return `🕒 (Dicas) Para "${prompt}": Pomodoro, resumos, revisão espaçada.`;
+    // programação:
+    const lang = (state.linguagem || '').toLowerCase();
+    const intro = `Sua pergunta é ótima — vamos analisar: posso explicar o conceito, mostrar um exemplo e sugerir exercícios.\n\n`;
+    if (lang === 'c') return intro + `Exemplo em C:\n\n#include <stdio.h>\nint main(){ printf("Olá, MAINTECH!\\n"); return 0; }`;
+    if (lang === 'java') return intro + `Exemplo em Java:\n\npublic class Main{ public static void main(String[] a){ System.out.println("Olá, MAINTECH!"); } }`;
+    if (lang === 'python') return intro + `Exemplo em Python:\n\nprint("Olá, MAINTECH!")`;
+    return intro + `Resposta geral: ${prompt}`;
+  }
+
+  function sendMessage(){
+    if (!input) return;
+    const txt = input.value.trim(); if (!txt) return;
+    addMessage(txt,'user'); input.value='';
+    simulateTyping(()=> { const resp = fakeApiResponse(txt); addMessage(resp,'ai'); }, 1200);
+  }
+
+  function clearChat(){ if (!chatBox) return; chatBox.innerHTML = ''; addMessage('Chat limpo. Pergunte algo!', 'ai'); }
+
+  function startChatIntro(){
+    if (!chatBox) return;
+    // se estiver vazio (apenas a mensagem inicial), mostra um typing breve
+    if (chatBox.children.length <= 1) simulateTyping(()=> addMessage('Pronto — me pergunte qualquer coisa!', 'ai'), 900);
+  }
+
+  // fluxo ao clicar em Chat no topo
+  function prepareChat(){
+    if (!state.area){ alert('Escolha antes a área (Programação / Outras matérias / Dicas).'); goToPage('page-escolha'); return; }
+    if (state.area === 'programacao' && !state.linguagem){ alert('Escolha a linguagem (C, Java ou Python) antes de usar o chat.'); goToPage('page-programacao'); return; }
+    if (!state.nivel){ goToPage('page-nivel'); return; }
+    goToPage('page-chat');
+  }
+
+  /* ========== Inicialização de controles (tema, fonte, logo) ========== */
+  document.addEventListener('DOMContentLoaded', ()=> {
+    // logo volta ao HOME
+    document.getElementById('brand-logo')?.addEventListener('click', ()=> goToPage('page-home'));
+
+    // font controls
+    const root = document.documentElement;
+    document.getElementById('inc-font')?.addEventListener('click', ()=> { let s = parseFloat(getComputedStyle(root).fontSize); root.style.fontSize = (s+1)+'px'; });
+    document.getElementById('dec-font')?.addEventListener('click', ()=> { let s = parseFloat(getComputedStyle(root).fontSize); if (s>12) root.style.fontSize = (s-1)+'px'; });
+
+    // theme toggle (dark/light)
+    const toggle = document.getElementById('toggle-theme');
+    toggle?.addEventListener('click', ()=> {
+      document.body.classList.toggle('light-mode');
+      localStorage.setItem('mt_theme', document.body.classList.contains('light-mode') ? 'light' : 'dark');
+    });
+    if (localStorage.getItem('mt_theme') === 'light') document.body.classList.add('light-mode');
+
+    // chat listeners
+    document.getElementById('send-btn')?.addEventListener('click', sendMessage);
+    document.getElementById('user-input')?.addEventListener('keypress', e => { if (e.key === 'Enter') sendMessage(); });
+
+    // inits
+    updateChips();
+  });
+  </script>
+</body>
+</html>
