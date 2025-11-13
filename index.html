@@ -343,7 +343,18 @@
   </footer>
 
   <!-- JS embutido (logica de navegação, overlay, chat simulado) -->
+  <script src="ai.js"></script>
   <script>
+     function goToPage(id){
+    document.querySelectorAll('.page').forEach(p=>{
+      p.classList.remove('active');
+      if(p.id===id) p.classList.add('active');
+    });
+    updateChips();
+    window.scrollTo({ top:0, behavior:'smooth' });
+    if(id==='page-chat') startChatIntro();
+  }
+
   /* ========== Estado e dados ========== */
   const state = { area: null, linguagem: null, nivel: null };
 
@@ -540,7 +551,5 @@ async function startChatIntro() {
     // inits
     updateChips();
   });
-  <script src="ai.js"></script>
-  </script>
 </body>
 </html>
