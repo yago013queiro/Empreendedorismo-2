@@ -5,16 +5,14 @@
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>MENTECH.AI — Estudos & Programação</title>
 
-  <!-- Fonte -->
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;700&display=swap" rel="stylesheet">
 
-  <!-- CSS -->
+
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
-  <!-- NAVBAR -->
-  <header class="navbar">
+   <header class="navbar">
     <div class="brand" id="brand-logo" role="button" title="Ir para a página inicial">
       <div class="logo-ico"></div>
       <div class="brand-text">MENTECH.IA<span>AI</span></div>
@@ -33,10 +31,9 @@
     </div>
   </header>
 
-  <!-- APP -->
   <main id="app">
 
-    <!-- HOME -->
+
     <section class="page active" id="page-home" data-page="home">
       <div class="home-center">
         <div class="center-panel">
@@ -52,7 +49,7 @@
         </div>
       </div>
 
-      <!-- O que oferecemos -->
+      
       <section class="home-section">
         <h2>O que nós oferecemos?</h2>
         <div class="features">
@@ -71,7 +68,7 @@
         </div>
       </section>
 
-      <!-- Depoimentos -->
+     
       <section class="home-section">
         <h2>Quem já usou</h2>
         <div class="testimonials">
@@ -87,7 +84,7 @@
       </section>
     </section>
 
-    <!-- ESCOLHA -->
+    <
     <section class="page" id="page-escolha" data-page="escolha">
       <h2>Escolha sua área</h2>
       <p class="section-sub">Cada área leva a um fluxo separado da IA.</p>
@@ -117,7 +114,7 @@
       </div>
     </section>
 
-    <!-- AREAS / LINGUAGENS (overview) -->
+  
     <section class="page" id="page-areas" data-page="areas">
       <h2>Todas as áreas</h2>
       <p class="section-sub">Aqui apresentamos as áreas disponíveis — clique numa linguagem para saber mais.</p>
@@ -147,7 +144,6 @@
       </div>
     </section>
 
-    <!-- PÁGINA DE PROGRAMAÇÃO -->
     <section class="page" id="page-programacao" data-page="programacao">
       <h2>Programação — Escolha a linguagem</h2>
       <p class="section-sub">Clique para abrir detalhes.</p>
@@ -174,7 +170,6 @@
       </div>
     </section>
 
-    <!-- NÍVEL -->
     <section class="page" id="page-nivel" data-page="nivel">
       <h2>Qual seu nível?</h2>
       <div class="nivel-grid">
@@ -188,7 +183,7 @@
       </div>
     </section>
 
-    <!-- DICAS -->
+   
     <section class="page" id="page-dicas" data-page="dicas">
       <h2>Dicas de estudo</h2>
       <div class="tips-grid">
@@ -203,7 +198,7 @@
       </div>
     </section>
 
-    <!-- CHAT - Versão melhorada -->
+    
     <section class="page" id="page-chat" data-page="chat">
       <div class="chat-container">
         <div class="chat-header">
@@ -243,7 +238,7 @@
 
   </main>
 
-  <!-- Language overlay (fullscreen) -->
+  
   <div id="lang-overlay" class="lang-overlay" aria-hidden="true">
     <div class="lang-panel">
       <button class="close" onclick="closeLangOverlay()">✕</button>
@@ -277,10 +272,9 @@
     <small>© 2025 MENTECH.AI — Equipe 1° Informática</small>
   </footer>
 
-  <!-- Scripts -->
   <script src="./ai.js"></script>
   <script>
-  /* ========== Estado e dados ========== */
+ 
   const state = { area: null, linguagem: null, nivel: null };
 
   const LANG_DATA = {
@@ -316,7 +310,6 @@ int main() {
     }
   };
 
-  /* ========== DOM helpers ========== */
   const pages = () => document.querySelectorAll('.page');
   const overlay = document.getElementById('lang-overlay');
   const langTitle = document.getElementById('lang-title');
@@ -325,7 +318,7 @@ int main() {
   const langCode = document.getElementById('lang-code');
   const langPoints = document.getElementById('lang-points');
 
-  /* ========== Navegação ========== */
+
   function goToPage(id){
     pages().forEach(p => {
       p.classList.remove('active','page-in','page-out');
@@ -348,11 +341,10 @@ int main() {
     if (level) level.textContent = state.nivel || '—';
   }
 
-  /* ========== Hover visual ========== */
+
   function hoverLang(el){ el.style.transform = 'scale(1.03)'; el.style.zIndex = 5; }
   function unhoverLang(el){ el.style.transform = ''; el.style.zIndex = ''; }
 
-  /* ========== Overlay linguagem ========== */
   function openLangOverlay(key){
     const data = LANG_DATA[key];
     if (!data) return;
@@ -365,13 +357,13 @@ int main() {
 
     overlay.classList.add('open'); overlay.setAttribute('aria-hidden','false');
 
-    // anima digitação do código
+  
     let i = 0; const codeStr = data.code;
     (function step(){
       if (i <= codeStr.length){ langCode.textContent = codeStr.slice(0,i); i++; setTimeout(step, 10); }
     })();
 
-    // grava linguagem no estado
+    
     state.linguagem = key; updateChips();
   }
 
@@ -391,7 +383,7 @@ int main() {
     goToPage('page-nivel'); 
   }
 
-  /* ========== Chat com IA (Groq) ========== */
+  
   async function sendMessage() {
     const input = document.getElementById('chat-input');
     const messages = document.getElementById('chat-messages');
@@ -399,17 +391,17 @@ int main() {
     const prompt = input.value.trim();
     if (!prompt) return;
 
-    // Adicionar mensagem do usuário
+    
     const userMsg = document.createElement('div');
     userMsg.className = 'message user';
     userMsg.innerHTML = `<div class="bubble">${prompt}</div>`;
     messages.appendChild(userMsg);
     input.value = '';
 
-    // Scroll para o final
+    
     messages.scrollTop = messages.scrollHeight;
 
-    // Mostrar indicador de digitação
+    
     const typingMsg = document.createElement('div');
     typingMsg.className = 'message ai typing-indicator';
     typingMsg.innerHTML = '<div class="avatar-mini">🤖</div><div class="bubble">Digitando...</div>';
@@ -417,19 +409,19 @@ int main() {
     messages.scrollTop = messages.scrollHeight;
 
     try {
-      // Chamar IA (usando ai.js se existir, senão simulado)
+      
       let response;
       if (window.askGroq) {
         response = await window.askGroq(prompt);
       } else {
-        // Fallback: resposta simulada
+        
         response = generateFallbackResponse(prompt);
       }
 
-      // Remover indicador de digitação
+     
       typingMsg.remove();
 
-      // Adicionar resposta da IA
+     
       const aiMsg = document.createElement('div');
       aiMsg.className = 'message ai';
       aiMsg.innerHTML = `<div class="avatar-mini">🤖</div><div class="bubble">${response}</div>`;
@@ -443,7 +435,7 @@ int main() {
       messages.appendChild(errorMsg);
     }
 
-    // Scroll para o final
+   
     messages.scrollTop = messages.scrollHeight;
   }
 
@@ -473,7 +465,7 @@ int main() {
     messages.innerHTML = '<div class="message ai"><div class="avatar-mini">🤖</div><div class="bubble">Chat limpo. Pergunte algo!</div></div>';
   }
 
-  // fluxo ao clicar em Chat no topo
+ 
   function prepareChat(){
     if (!state.area){ 
       alert('Escolha antes a área (Programação / Outras matérias / Dicas).'); 
@@ -492,12 +484,11 @@ int main() {
     goToPage('page-chat');
   }
 
-  /* ========== Inicialização ========== */
   document.addEventListener('DOMContentLoaded', ()=> {
-    // logo volta ao HOME
+
     document.getElementById('brand-logo')?.addEventListener('click', ()=> goToPage('page-home'));
 
-    // font controls
+    
     const root = document.documentElement;
     document.getElementById('inc-font')?.addEventListener('click', ()=> { 
       let s = parseFloat(getComputedStyle(root).fontSize); 
@@ -508,7 +499,7 @@ int main() {
       if (s>12) root.style.fontSize = (s-1)+'px'; 
     });
 
-    // theme toggle
+   
     const toggle = document.getElementById('toggle-theme');
     toggle?.addEventListener('click', ()=> {
       document.body.classList.toggle('light-mode');
@@ -516,19 +507,19 @@ int main() {
     });
     if (localStorage.getItem('mt_theme') === 'light') document.body.classList.add('light-mode');
 
-    // chat listeners
+   
     document.getElementById('chat-input')?.addEventListener('keypress', e => { 
       if (e.key === 'Enter') sendMessage(); 
     });
 
-    // inits
+    
     updateChips();
   });
   </script>
 
-  <!-- Estilos melhorados para o chat -->
+  
   <style>
-    /* Chat styles modernos e responsivos */
+    
     #page-chat {
       display: flex;
       flex-direction: column;
@@ -617,7 +608,7 @@ int main() {
       gap: 16px;
     }
 
-    /* Scrollbar personalizada */
+   
     #page-chat .chat-messages::-webkit-scrollbar {
       width: 8px;
     }
@@ -772,7 +763,7 @@ int main() {
       flex-direction: column;
     }
 
-    /* Home center style */
+   
     .home-center {
       display: flex;
       align-items: center;
@@ -807,7 +798,7 @@ int main() {
       font-size: 1rem;
     }
 
-    /* Responsivo */
+
     @media (max-width: 768px) {
       #page-chat .chat-container {
         border-radius: 0;

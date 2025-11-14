@@ -37,7 +37,7 @@ window.askClaude = askGroq;
 window.askGroq = askGroq;
 window.checkIAStatus = checkIAStatus;
 
-// --- UI helpers: fonte e tema (salva em localStorage) ---
+
 (function(){
   function getStoredFont() {
     const v = localStorage.getItem('site-font-size');
@@ -75,12 +75,12 @@ window.checkIAStatus = checkIAStatus;
   }
 
   document.addEventListener('DOMContentLoaded', ()=>{
-    // aplicar preferências salvas
+    
     const stored = getStoredFont();
     if (stored) applyFontSize(stored);
     applyStoredTheme();
 
-    // ligar botões se existirem
+    
     const inc = document.getElementById('inc-font');
     const dec = document.getElementById('dec-font');
     const toggle = document.getElementById('toggle-theme');
