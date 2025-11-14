@@ -4,39 +4,42 @@ export default async function handler(req, res) {
   }
 
   try {
-    const GEMINI_API_KEY = process.env.GEMINI_API_KEY;
-    
-    if (!GEMINI_API_KEY) {
-      return res.status(500).json({ 
-        error: "GEMINI_API_KEY não configurada" 
+    const CLAUDE_API_KEY = process.env.CLAUDE_API_KEY;
+
+    if (!CLAUDE_API_KEY) {
+      return res.status(500).json({
+        error: "CLAUDE_API_KEY não configurada"
       });
     }
 
-    const GEMINI_MODEL = "gemini-1.5-flash";
-    const endpoint = `https://generativelanguage.googleapis.com/v1/models/${GEMINI_MODEL}:generateContent?key=${GEMINI_API_KEY}`;
+    const endpoint = "https://api.anthropic.com/v1/complete";
+
+    const prompt = `\n\nHuman: ${req.body.prompt}\n\nAssistant:`;
 
     const response = await fetch(endpoint, {
       method: "POST",
-      headers: { "Content-Type": "application/json" },
+      headers: {
+        "Content-Type": "application/json",
+        "x-api-key": CLAUDE_API_KEY
+      },
       body: JSON.stringify({
-        contents: [{ 
-          role: "user", 
-          parts: [{ text: req.body.prompt }] 
-        }]
+        model: "claude-2.1", 
+        prompt,
+        max_tokens_to_sample: 1000,
+        temperature: 0.7
       })
     });
 
     const data = await response.json();
 
-    // Verificar se a resposta foi bem-sucedida
     if (!response.ok) {
-      console.error("Erro Gemini API:", data);
-      return res.status(response.status).json({ 
-        error: data?.error?.message || "Erro na API do Gemini" 
+      console.error("Erro Claude API:", data);
+      return res.status(response.status).json({
+        error: data?.error?.message || JSON.stringify(data)
       });
     }
 
-    const text = data?.candidates?.[0]?.content?.parts?.[0]?.text || null;
+    const text = data?.completion || data?.completion?.text || data?.output || data?.response || null;
 
     if (!text) {
       return res.status(200).json({ text: "Desculpe, não consegui gerar uma resposta." });
