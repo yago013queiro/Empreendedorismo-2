@@ -1,5 +1,3 @@
-// Cliente leve - chama o backend (/api/ask) que gerencia a conexão com Claude
-// NUNCA exponha chaves de API no frontend!
 
 async function askClaude(prompt) {
   try {
