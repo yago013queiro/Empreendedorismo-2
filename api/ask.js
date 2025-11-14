@@ -36,16 +36,27 @@ export default async function handler(req, res) {
       })
     });
 
-    const data = await response.json();
+    // Ler resposta com segurança: só parsear JSON se o content-type indicar
+    let data = null;
+    const contentType = response.headers.get("content-type") || "";
 
-    if (!response.ok) {
-      console.error("Erro HF API:", {
-        status: response.status,
-        data
-      });
-      return res.status(response.status).json({
-        error: `Erro IA (${response.status}): ${data?.error || JSON.stringify(data)}`
-      });
+    if (contentType.includes("application/json")) {
+      try {
+        data = await response.json();
+      } catch (parseErr) {
+        console.error("Erro ao parsear JSON da HF API:", parseErr);
+        const text = await response.text();
+        return res.status(502).json({ error: `Erro ao interpretar resposta da IA: ${text}` });
+      }
+    } else {
+      // resposta não-JSON (ex: "Not Found" ou HTML)
+      const textBody = await response.text();
+      if (!response.ok) {
+        console.error("Erro HF API (não-JSON):", { status: response.status, body: textBody });
+        return res.status(response.status).json({ error: `Erro IA (${response.status}): ${textBody}` });
+      }
+      // caso seja 200 mas texto simples, usar esse texto como resposta
+      data = textBody;
     }
 
     // Extrair texto da resposta (suportando formatos distintos do router)
@@ -65,6 +76,10 @@ export default async function handler(req, res) {
     }
 
     if (!text) {
+      // Se data for string, devolver como texto cru
+      if (typeof data === 'string' && data.trim()) {
+        return res.status(200).json({ text: data.trim() });
+      }
       return res.status(200).json({ text: "Desculpe, não consegui gerar uma resposta." });
     }
 
