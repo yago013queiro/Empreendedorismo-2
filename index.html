@@ -65,6 +65,7 @@
   <!-- Scripts -->
   <script src="./ai.js"></script>
   <script>
+    
     function goToPage(page) {
       document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
       document.getElementById(page).classList.add('active');
@@ -73,7 +74,8 @@
     function prepareChat() {
       goToPage('page-chat');
     }
-
+    function escreverAnimado(el, texto, velocidade = 18) {
+      let i = 0;}
     async function sendMessage() {
       const input = document.getElementById('chat-input');
       const messages = document.getElementById('chat-messages');
