@@ -16,7 +16,7 @@
   <!-- NAVBAR -->
   <header class="navbar">
     <div class="brand" id="brand-logo" role="button" title="Ir para a página inicial">
-      <div class="logo-ico"></div>
+      <div class="logo-ico">🤖</div>
       <div class="brand-text">MENTECH.IA<span>AI</span></div>
     </div>
 
@@ -35,99 +35,586 @@
 
   <!-- APP -->
   <main id="app">
+
+    <!-- HOME -->
     <section class="page active" id="page-home" data-page="home">
       <div class="home-center">
         <div class="center-panel">
           <h1>Bem-vindo(a) à <span>MENTECH.AI</span></h1>
-          <p class="lead">Explicações e ensinamentos com IA Groq — resultados claros e práticos.</p>
+          <p class="lead">Explicações e ensinamentos com IA — resultados claros e práticos.</p>
+          
           <div class="hero-cta">
             <button class="btn large" onclick="prepareChat()">Começar Chat</button>
-            <button class="btn outline" onclick="goToPage('page-chat')">Ver Chat</button>
+            <button class="btn outline" onclick="goToPage('page-areas')">Ver áreas</button>
           </div>
 
-          <p class="intro">Aqui estão algumas áreas que você pode explorar: programação, IA aplicada, negócios e carreira.</p>
+          <p class="intro">Aqui estão algumas áreas que você pode explorar: programação, matérias gerais e dicas de estudo.</p>
         </div>
+      </div>
+
+      <!-- O que oferecemos -->
+      <section class="home-section">
+        <h2>O que nós oferecemos?</h2>
+        <div class="features">
+          <div class="feature big">
+            <h3>Explicações passo a passo</h3>
+            <p>Ensinaremos o que você mais tem dificuldade, e tiraremos todas suas dúvidas, para aprender facilmente.</p>
+          </div>
+          <div class="feature big">
+            <h3>Diversidade de Conteúdos</h3>
+            <p>Aprenda a linguagem ou matéria que você mais tem dificuldade facilmente.</p>
+          </div>
+          <div class="feature big">
+            <h3>Plano de estudos</h3>
+            <p>Modelos para planejar seus estudos com eficiência.</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- Depoimentos -->
+      <section class="home-section">
+        <h2>Quem já usou</h2>
+        <div class="testimonials">
+          <div class="testi">
+            <p>"Eu aprendi diversas coisas com a MENTECH, porém a que mais me ensinou foi os Laços de repetição em C!"</p>
+            <small>— Saimon Lincoln</small>
+          </div>
+          <div class="testi">
+            <p>"Aprendi o básico de Java e Python, sabendo apenas programar em C."</p>
+            <small>— João Pedro</small>
+          </div>
+        </div>
+      </section>
+    </section>
+
+    <!-- ESCOLHA -->
+    <section class="page" id="page-escolha" data-page="escolha">
+      <h2>Escolha sua área</h2>
+      <p class="section-sub">Cada área leva a um fluxo separado da IA.</p>
+
+      <div class="grid-choices large">
+        <article class="choice-card" onclick="setArea('programacao'); goToPage('page-programacao')">
+          <img src="https://cdn.pixabay.com/photo/2016/11/19/14/00/code-1839406_1280.jpg" alt="Programação">
+          <h3>Programação</h3>
+          <p>Aprenda a programar com sua linguagem específica.</p>
+        </article>
+
+        <article class="choice-card" onclick="setArea('materias'); goToPage('page-nivel')">
+          <img src="https://cdn.pixabay.com/photo/2016/03/27/07/08/blackboard-1282765_1280.jpg" alt="Outras matérias">
+          <h3>Outras matérias (Geral)</h3>
+          <p>Conteúdo geral, Matemática, Português etc.</p>
+        </article>
+
+        <article class="choice-card" onclick="setArea('estudo'); goToPage('page-dicas')">
+          <img src="https://cdn.pixabay.com/photo/2015/09/05/21/51/study-925589_1280.jpg" alt="Dicas de estudo">
+          <h3>Dicas de estudo</h3>
+          <p>Aprenda da melhor forma, como estudar corretamente.</p>
+        </article>
+      </div>
+
+      <div class="pager">
+        <button class="btn outline" onclick="goToPage('page-home')">← Voltar</button>
       </div>
     </section>
 
-    <!-- CHAT PAGE -->
+    <!-- AREAS / LINGUAGENS (overview) -->
+    <section class="page" id="page-areas" data-page="areas">
+      <h2>Todas as áreas</h2>
+      <p class="section-sub">Aqui apresentamos as áreas disponíveis — clique numa linguagem para saber mais.</p>
+
+      <div class="langs-grid">
+        <!-- C -->
+        <div class="lang-card" data-lang="C" onmouseenter="hoverLang(this)" onmouseleave="unhoverLang(this)" onclick="openLangOverlay('C')">
+          <img src="https://cdn.pixabay.com/photo/2016/06/06/17/05/c-programming-1436536_1280.jpg" alt="C">
+          <div class="lang-info"><h3>C</h3><p>A linguagem C tem: Simplicidade, Sintaxe simples e de aprendizado rápido de entender.</p></div>
+        </div>
+
+        <!-- Java -->
+        <div class="lang-card" data-lang="Java" onmouseenter="hoverLang(this)" onmouseleave="unhoverLang(this)" onclick="openLangOverlay('Java')">
+          <img src="https://images.unsplash.com/photo-1547658719-da2b51169166?q=80&w=1400&auto=format&fit=crop&ixlib=rb-4.0.3&s=2f8d886e41b9bc2a6d8a7a4f1dfb4a50" alt="Java">
+          <div class="lang-info"><h3>Java</h3><p>A linguagem JAVA tem: Plataforma independente, POO(Programação Orientada a Objeto), Robusto e linguagem mais complicada de entender.</p></div>
+        </div>
+
+        <!-- Python -->
+        <div class="lang-card" data-lang="Python" onmouseenter="hoverLang(this)" onmouseleave="unhoverLang(this)" onclick="openLangOverlay('Python')">
+          <img src="https://cdn.pixabay.com/photo/2015/01/08/18/29/entrepreneur-593358_1280.jpg" alt="Python">
+          <div class="lang-info"><h3>Python</h3><p>A linguagem PYTHON tem: Versátilidade, e a facilidade de entender, e tem a Sintaxe mais simples.</p></div>
+        </div>
+      </div>
+
+      <div class="pager">
+        <button class="btn outline" onclick="goToPage('page-home')">← Voltar</button>
+      </div>
+    </section>
+
+    <!-- PÁGINA DE PROGRAMAÇÃO -->
+    <section class="page" id="page-programacao" data-page="programacao">
+      <h2>Programação — Escolha a linguagem</h2>
+      <p class="section-sub">Clique para abrir detalhes.</p>
+
+      <div class="langs-grid">
+        <div class="lang-card" data-lang="C" onmouseenter="hoverLang(this)" onmouseleave="unhoverLang(this)" onclick="openLangOverlay('C')">
+          <img src="https://cdn.pixabay.com/photo/2016/06/06/17/05/c-programming-1436536_1280.jpg" alt="C language">
+          <div class="lang-info"><h3>C</h3><p>Simples e rápido aprendizado.</p></div>
+        </div>
+
+        <div class="lang-card" data-lang="Java" onmouseenter="hoverLang(this)" onmouseleave="unhoverLang(this)" onclick="openLangOverlay('Java')">
+          <img src="https://images.unsplash.com/photo-1547658719-da2b51169166?q=80&w=1400&auto=format&fit=crop&ixlib=rb-4.0.3&s=2f8d886e41b9bc2a6d8a7a4f1dfb4a50" alt="Java">
+          <div class="lang-info"><h3>Java</h3><p>Dificultosa, porém Orientada a Objetos.</p></div>
+        </div>
+
+        <div class="lang-card" data-lang="Python" onmouseenter="hoverLang(this)" onmouseleave="unhoverLang(this)" onclick="openLangOverlay('Python')">
+          <img src="https://cdn.pixabay.com/photo/2015/01/08/18/29/entrepreneur-593358_1280.jpg" alt="Python">
+          <div class="lang-info"><h3>Python</h3><p>Simples e versátil</p></div>
+        </div>
+      </div>
+
+      <div class="pager">
+        <button class="btn outline" onclick="goToPage('page-escolha')">← Voltar</button>
+      </div>
+    </section>
+
+    <!-- NÍVEL -->
+    <section class="page" id="page-nivel" data-page="nivel">
+      <h2>Qual seu nível?</h2>
+      <div class="nivel-grid">
+        <div class="nivel-card" onclick="setNivel('medio')">🎓 Ensino Médio</div>
+        <div class="nivel-card" onclick="setNivel('faculdade')">🏛️ Faculdade</div>
+      </div>
+
+      <div class="pager">
+        <button class="btn outline" onclick="goToPage('page-escolha')">← Voltar</button>
+        <button class="btn" onclick="goToPage('page-chat')">Ir para chat →</button>
+      </div>
+    </section>
+
+    <!-- DICAS -->
+    <section class="page" id="page-dicas" data-page="dicas">
+      <h2>Dicas de estudo</h2>
+      <div class="tips-grid">
+        <div class="tip"><h4>Técnica Pomodoro</h4><p>Rotina de 25/5 — Com repetição de 4x.</p></div>
+        <div class="tip"><h4>Resumos</h4><p>Escreva com suas palavras, que dará um resumo explicativo.</p></div>
+        <div class="tip"><h4>Exercícios</h4><p>Resolva e entenda o erro.</p></div>
+      </div>
+
+      <div class="pager">
+        <button class="btn outline" onclick="goToPage('page-escolha')">← Voltar</button>
+        <button class="btn" onclick="goToPage('page-nivel')">Ir para Nível →</button>
+      </div>
+    </section>
+
+    <!-- CHAT - Versão melhorada -->
     <section class="page" id="page-chat" data-page="chat">
       <div class="chat-container">
-        <div class="chat-messages" id="chat-messages"></div>
+        <div class="chat-header">
+          <div class="chat-title">
+            <div class="avatar">🤖</div>
+            <div>
+              <h3>MENTECH.AI</h3>
+              <small class="chat-sub">Assistente de Estudos</small>
+            </div>
+          </div>
+
+          <div class="chat-info">
+            <div class="chip">Área: <span id="chip-area">—</span></div>
+            <div class="chip">Linguagem: <span id="chip-lang">—</span></div>
+            <div class="chip">Nível: <span id="chip-level">—</span></div>
+          </div>
+        </div>
+
+        <div class="chat-messages" id="chat-messages">
+          <div class="message ai">
+            <div class="avatar-mini">🤖</div>
+            <div class="bubble">Olá! Eu sou a MENTECH.AI — Qual sua dúvida?</div>
+          </div>
+        </div>
+
         <div class="chat-input-area">
           <input type="text" id="chat-input" placeholder="Digite sua pergunta..." />
           <button onclick="sendMessage()">Enviar</button>
         </div>
+
+        <div class="chat-actions">
+          <button class="btn outline" onclick="goToPage('page-escolha')">Escolher novamente</button>
+          <button class="btn danger" onclick="clearChat()">Limpar chat</button>
+        </div>
       </div>
     </section>
+
   </main>
+
+  <!-- Language overlay (fullscreen) -->
+  <div id="lang-overlay" class="lang-overlay" aria-hidden="true">
+    <div class="lang-panel">
+      <button class="close" onclick="closeLangOverlay()">✕</button>
+      <div class="lang-header">
+        <img id="lang-img" src="/placeholder.svg" alt="">
+        <div>
+          <h2 id="lang-title"></h2>
+          <p id="lang-desc"></p>
+        </div>
+      </div>
+
+      <div class="lang-body">
+        <div class="lang-examples">
+          <h4>Exemplo de código</h4>
+          <pre id="lang-code" class="code-box"></pre>
+          <div class="lang-actions">
+            <button class="btn" onclick="copyCode()">Copiar código</button>
+            <button class="btn outline" onclick="proceedFromOverlay()">Prosseguir (escolher nível)</button>
+          </div>
+        </div>
+
+        <div class="lang-more">
+          <h4>O que você vai aprender</h4>
+          <ul id="lang-points"></ul>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <footer class="site-footer">
+    <small>© 2025 MENTECH.AI — Equipe 1° Informática</small>
+  </footer>
 
   <!-- Scripts -->
   <script src="./ai.js"></script>
   <script>
+  /* ========== Estado e dados ========== */
+  const state = { area: null, linguagem: null, nivel: null };
+
+  const LANG_DATA = {
+    "C": {
+      title: "C — Linguagem C",
+      img: "https://cdn.pixabay.com/photo/2016/06/06/17/05/c-programming-1436536_1280.jpg",
+      desc: "C é clássica, ótima para entender lógica e memória. Excelente para sistemas e fundamentos.",
+      points: ["Sintaxe básica", "Ponteiros e memória", "Funções e estruturas", "Compilação com gcc"],
+      code: `#include <stdio.h>
+
+int main() {
+  printf("Olá, MENTECH!\\n");
+  return 0;
+}`
+    },
+    "Java": {
+      title: "Java — Linguagem Java",
+      img: "https://images.unsplash.com/photo-1547658719-da2b51169166?q=80&w=1400&auto=format&fit=crop&ixlib=rb-4.0.3&s=2f8d886e41b9bc2a6d8a7a4f1dfb4a50",
+      desc: "Java é orientada a objetos, usada em aplicações e servidores — ótima para OOP.",
+      points: ["Classes e objetos","Herança e polimorfismo","Coleções","Compilação com javac"],
+      code: `public class Main {
+  public static void main(String[] args) {
+    System.out.println("Olá, MENTECH!");
+  }
+}`
+    },
+    "Python": {
+      title: "Python — Linguagem Python",
+      img: "https://cdn.pixabay.com/photo/2015/01/08/18/29/entrepreneur-593358_1280.jpg",
+      desc: "Python é simples e poderosa — ideal para iniciantes e scripts rápidos.",
+      points: ["Sintaxe simples","Bibliotecas ricas","Interpretação imediata","Ideal para protótipos"],
+      code: `print("Olá, MENTECH!")`
+    }
+  };
+
+  /* ========== DOM helpers ========== */
+  const pages = () => document.querySelectorAll('.page');
+  const overlay = document.getElementById('lang-overlay');
+  const langTitle = document.getElementById('lang-title');
+  const langDesc = document.getElementById('lang-desc');
+  const langImg = document.getElementById('lang-img');
+  const langCode = document.getElementById('lang-code');
+  const langPoints = document.getElementById('lang-points');
+
+  /* ========== Navegação ========== */
+  function goToPage(id){
+    pages().forEach(p => {
+      p.classList.remove('active','page-in','page-out');
+      if (p.id === id) p.classList.add('active','page-in'); else p.classList.add('page-out');
+    });
+    updateChips();
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+
+  function setArea(a){ state.area = a; updateChips(); }
+  function setLinguagem(l){ state.linguagem = l; updateChips(); }
+  function setNivel(n){ state.nivel = n; updateChips(); goToPage('page-chat'); }
+
+  function updateChips(){
+    const area = document.getElementById('chip-area');
+    const lang = document.getElementById('chip-lang');
+    const level = document.getElementById('chip-level');
+    if (area) area.textContent = state.area || '—';
+    if (lang) lang.textContent = state.linguagem || '—';
+    if (level) level.textContent = state.nivel || '—';
+  }
+
+  /* ========== Hover visual ========== */
+  function hoverLang(el){ el.style.transform = 'scale(1.03)'; el.style.zIndex = 5; }
+  function unhoverLang(el){ el.style.transform = ''; el.style.zIndex = ''; }
+
+  /* ========== Overlay linguagem ========== */
+  function openLangOverlay(key){
+    const data = LANG_DATA[key];
+    if (!data) return;
+    langTitle.textContent = data.title;
+    langDesc.textContent = data.desc;
+    langImg.src = data.img;
+    langCode.textContent = '';
+    langPoints.innerHTML = '';
+    data.points.forEach(p => { const li = document.createElement('li'); li.textContent = p; langPoints.appendChild(li); });
+
+    overlay.classList.add('open'); overlay.setAttribute('aria-hidden','false');
+
+    // anima digitação do código
+    let i = 0; const codeStr = data.code;
+    (function step(){
+      if (i <= codeStr.length){ langCode.textContent = codeStr.slice(0,i); i++; setTimeout(step, 10); }
+    })();
+
+    // grava linguagem no estado
+    state.linguagem = key; updateChips();
+  }
+
+  function closeLangOverlay(){
+    overlay.classList.remove('open'); overlay.setAttribute('aria-hidden','true');
+    goToPage('page-home');
+  }
+
+  function copyCode(){ 
+    const txt = langCode.textContent; 
+    navigator.clipboard?.writeText(txt).then(()=> alert('Código copiado!')).catch(()=> alert('Não foi possível copiar.')) 
+  }
+  
+  function proceedFromOverlay(){ 
+    overlay.classList.remove('open'); 
+    overlay.setAttribute('aria-hidden','true'); 
+    goToPage('page-nivel'); 
+  }
+
+  /* ========== Chat com IA (Groq) ========== */
+  async function sendMessage() {
+    const input = document.getElementById('chat-input');
+    const messages = document.getElementById('chat-messages');
     
-    function goToPage(page) {
-      document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
-      document.getElementById(page).classList.add('active');
-    }
+    const prompt = input.value.trim();
+    if (!prompt) return;
 
-    function prepareChat() {
-      goToPage('page-chat');
-    }
-    function escreverAnimado(el, texto, velocidade = 18) {
-      let i = 0;}
-    async function sendMessage() {
-      const input = document.getElementById('chat-input');
-      const messages = document.getElementById('chat-messages');
-      
-      const prompt = input.value.trim();
-      if (!prompt) return;
+    // Adicionar mensagem do usuário
+    const userMsg = document.createElement('div');
+    userMsg.className = 'message user';
+    userMsg.innerHTML = `<div class="bubble">${prompt}</div>`;
+    messages.appendChild(userMsg);
+    input.value = '';
 
-      // Adicionar mensagem do usuário
-      const userMsg = document.createElement('div');
-      userMsg.className = 'message user';
-      userMsg.textContent = prompt;
-      messages.appendChild(userMsg);
-      input.value = '';
+    // Scroll para o final
+    messages.scrollTop = messages.scrollHeight;
 
-      // Chamar Groq
-      const response = await window.askGroq(prompt);
+    // Mostrar indicador de digitação
+    const typingMsg = document.createElement('div');
+    typingMsg.className = 'message ai typing-indicator';
+    typingMsg.innerHTML = '<div class="avatar-mini">🤖</div><div class="bubble">Digitando...</div>';
+    messages.appendChild(typingMsg);
+    messages.scrollTop = messages.scrollHeight;
 
-      // Adicionar resposta
+    try {
+      // Chamar IA (usando ai.js se existir, senão simulado)
+      let response;
+      if (window.askGroq) {
+        response = await window.askGroq(prompt);
+      } else {
+        // Fallback: resposta simulada
+        response = generateFallbackResponse(prompt);
+      }
+
+      // Remover indicador de digitação
+      typingMsg.remove();
+
+      // Adicionar resposta da IA
       const aiMsg = document.createElement('div');
       aiMsg.className = 'message ai';
-      aiMsg.textContent = response;
+      aiMsg.innerHTML = `<div class="avatar-mini">🤖</div><div class="bubble">${response}</div>`;
       messages.appendChild(aiMsg);
 
-      // Scroll para o final
-      messages.scrollTop = messages.scrollHeight;
+    } catch (error) {
+      typingMsg.remove();
+      const errorMsg = document.createElement('div');
+      errorMsg.className = 'message ai error';
+      errorMsg.innerHTML = `<div class="avatar-mini">⚠️</div><div class="bubble">Desculpe, ocorreu um erro. Tente novamente.</div>`;
+      messages.appendChild(errorMsg);
     }
+
+    // Scroll para o final
+    messages.scrollTop = messages.scrollHeight;
+  }
+
+  function generateFallbackResponse(prompt) {
+    if (!state.area) return "Por favor, selecione sua área antes de usar o chat.";
+    
+    const lang = (state.linguagem || '').toLowerCase();
+    const area = state.area;
+    
+    if (area === 'programacao' && lang) {
+      return `Ótima pergunta sobre ${state.linguagem}! Vou explicar: "${prompt}"\n\nEm ${state.linguagem}, você pode resolver isso da seguinte forma...\n\n(Para respostas mais detalhadas, configure a integração com Groq no arquivo ai.js)`;
+    }
+    
+    if (area === 'materias') {
+      return `📚 Sobre "${prompt}": Vou te ajudar com essa matéria! Aqui está uma explicação resumida...\n\n(Configure ai.js para respostas mais completas)`;
+    }
+    
+    if (area === 'estudo') {
+      return `🕒 Para "${prompt}": Recomendo usar a Técnica Pomodoro, fazer resumos com suas próprias palavras e revisar regularmente.\n\n(Configure ai.js para dicas personalizadas)`;
+    }
+    
+    return `Entendi sua pergunta sobre "${prompt}". Configure a integração com Groq no arquivo ai.js para respostas mais detalhadas!`;
+  }
+
+  function clearChat() {
+    const messages = document.getElementById('chat-messages');
+    messages.innerHTML = '<div class="message ai"><div class="avatar-mini">🤖</div><div class="bubble">Chat limpo. Pergunte algo!</div></div>';
+  }
+
+  // fluxo ao clicar em Chat no topo
+  function prepareChat(){
+    if (!state.area){ 
+      alert('Escolha antes a área (Programação / Outras matérias / Dicas).'); 
+      goToPage('page-escolha'); 
+      return; 
+    }
+    if (state.area === 'programacao' && !state.linguagem){ 
+      alert('Escolha a linguagem (C, Java ou Python) antes de usar o chat.'); 
+      goToPage('page-programacao'); 
+      return; 
+    }
+    if (!state.nivel){ 
+      goToPage('page-nivel'); 
+      return; 
+    }
+    goToPage('page-chat');
+  }
+
+  /* ========== Inicialização ========== */
+  document.addEventListener('DOMContentLoaded', ()=> {
+    // logo volta ao HOME
+    document.getElementById('brand-logo')?.addEventListener('click', ()=> goToPage('page-home'));
+
+    // font controls
+    const root = document.documentElement;
+    document.getElementById('inc-font')?.addEventListener('click', ()=> { 
+      let s = parseFloat(getComputedStyle(root).fontSize); 
+      root.style.fontSize = (s+1)+'px'; 
+    });
+    document.getElementById('dec-font')?.addEventListener('click', ()=> { 
+      let s = parseFloat(getComputedStyle(root).fontSize); 
+      if (s>12) root.style.fontSize = (s-1)+'px'; 
+    });
+
+    // theme toggle
+    const toggle = document.getElementById('toggle-theme');
+    toggle?.addEventListener('click', ()=> {
+      document.body.classList.toggle('light-mode');
+      localStorage.setItem('mt_theme', document.body.classList.contains('light-mode') ? 'light' : 'dark');
+    });
+    if (localStorage.getItem('mt_theme') === 'light') document.body.classList.add('light-mode');
+
+    // chat listeners
+    document.getElementById('chat-input')?.addEventListener('keypress', e => { 
+      if (e.key === 'Enter') sendMessage(); 
+    });
+
+    // inits
+    updateChips();
+  });
   </script>
- <style>
-    /* Chat styles scoped to the chat page only */
+
+  <!-- Estilos melhorados para o chat -->
+  <style>
+    /* Chat styles modernos e responsivos */
     #page-chat {
       display: flex;
       flex-direction: column;
-      height: calc(100vh - 76px); /* Altura total menos a navbar */
       padding: 0;
+      min-height: calc(100vh - 80px);
     }
 
     #page-chat .chat-container {
       display: flex;
       flex-direction: column;
-      max-width: 1000px;
+      max-width: 1200px;
       margin: 0 auto;
       width: 100%;
-      height: 100%;
+      height: calc(100vh - 80px);
+      background: rgba(255,255,255,0.02);
+      border-radius: 12px;
+      overflow: hidden;
+      box-shadow: 0 4px 24px rgba(0,0,0,0.2);
+    }
+
+    .chat-header {
+      padding: 20px;
+      background: rgba(255,255,255,0.03);
+      border-bottom: 1px solid rgba(255,255,255,0.08);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 16px;
+    }
+
+    .chat-title {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .chat-title .avatar {
+      width: 48px;
+      height: 48px;
+      background: linear-gradient(135deg, #a020f0, #7010b0);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 24px;
+    }
+
+    .chat-title h3 {
+      margin: 0;
+      font-size: 1.2rem;
+      color: white;
+    }
+
+    .chat-sub {
+      color: #bdb7cf;
+      font-size: 0.85rem;
+    }
+
+    .chat-info {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    .chip {
+      background: rgba(160,32,240,0.2);
+      padding: 6px 12px;
+      border-radius: 20px;
+      font-size: 0.85rem;
+      color: #bdb7cf;
+      border: 1px solid rgba(160,32,240,0.3);
+    }
+
+    .chip span {
+      color: white;
+      font-weight: 500;
     }
 
     #page-chat .chat-messages {
       flex: 1;
       overflow-y: auto;
-      padding: 18px;
+      padding: 24px;
       display: flex;
       flex-direction: column;
-      gap: 10px;
+      gap: 16px;
     }
 
     /* Scrollbar personalizada */
@@ -150,75 +637,198 @@
     }
 
     .message {
-      padding: 10px 14px;
-      border-radius: 8px;
-      max-width: 70%;
+      display: flex;
+      gap: 10px;
+      max-width: 75%;
+      animation: messageIn 0.3s ease-out;
+    }
+
+    @keyframes messageIn {
+      from {
+        opacity: 0;
+        transform: translateY(10px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
     }
 
     .message.user {
-      background: #a020f0;
-      color: white;
       align-self: flex-end;
+      flex-direction: row-reverse;
     }
 
     .message.ai {
-      background: rgba(255,255,255,0.06);
-      color: #bdb7cf;
       align-self: flex-start;
+    }
+
+    .avatar-mini {
+      width: 32px;
+      height: 32px;
+      background: linear-gradient(135deg, #a020f0, #7010b0);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 16px;
+      flex-shrink: 0;
+    }
+
+    .bubble {
+      padding: 12px 16px;
+      border-radius: 12px;
+      line-height: 1.5;
+      word-wrap: break-word;
+    }
+
+    .message.user .bubble {
+      background: linear-gradient(135deg, #a020f0, #8020d0);
+      color: white;
+      border-bottom-right-radius: 4px;
+    }
+
+    .message.ai .bubble {
+      background: rgba(255,255,255,0.06);
+      color: #e8e6ef;
+      border-bottom-left-radius: 4px;
+      border: 1px solid rgba(255,255,255,0.08);
+    }
+
+    .typing-indicator .bubble {
+      animation: pulse 1.5s ease-in-out infinite;
+    }
+
+    @keyframes pulse {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.5; }
     }
 
     .chat-input-area {
       display: flex;
       gap: 12px;
-      padding: 16px;
-      background: rgba(255,255,255,0.02);
-      border-top: 1px solid rgba(255,255,255,0.06);
+      padding: 20px;
+      background: rgba(255,255,255,0.03);
+      border-top: 1px solid rgba(255,255,255,0.08);
       flex-shrink: 0;
-      position: sticky;
-      bottom: 0;
-      backdrop-filter: blur(12px);
-      box-shadow: 0 -4px 20px rgba(0,0,0,0.3);
     }
 
     #chat-input {
       flex: 1;
-      padding: 14px 16px;
-      border: 1px solid rgba(255,255,255,0.08);
-      border-radius: 6px;
-      background: rgba(255,255,255,0.03);
+      padding: 14px 18px;
+      border: 1px solid rgba(255,255,255,0.1);
+      border-radius: 8px;
+      background: rgba(255,255,255,0.05);
       color: white;
       font-family: Poppins, sans-serif;
       font-size: 1rem;
+      transition: all 0.3s ease;
     }
 
-    #chat-input::placeholder { color: #bdb7cf }
+    #chat-input:focus {
+      outline: none;
+      border-color: #a020f0;
+      background: rgba(255,255,255,0.08);
+      box-shadow: 0 0 0 3px rgba(160,32,240,0.1);
+    }
+
+    #chat-input::placeholder { 
+      color: #bdb7cf;
+    }
 
     .chat-input-area button { 
-      padding: 14px 20px; 
-      background: #a020f0; 
+      padding: 14px 24px; 
+      background: linear-gradient(135deg, #a020f0, #8020d0);
       color: white; 
       border: none; 
-      border-radius: 6px; 
+      border-radius: 8px; 
       cursor: pointer; 
-      font-family: Poppins, sans-serif 
+      font-family: Poppins, sans-serif;
+      font-weight: 500;
+      transition: all 0.3s ease;
     }
 
-    .page { display: none }
-    .page.active { display: flex }
+    .chat-input-area button:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(160,32,240,0.4);
+    }
+
+    .chat-actions {
+      display: flex;
+      gap: 12px;
+      padding: 16px 20px;
+      background: rgba(255,255,255,0.02);
+      border-top: 1px solid rgba(255,255,255,0.05);
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+
+    .page { 
+      display: none;
+    }
+    
+    .page.active { 
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* Home center style */
+    .home-center {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 50vh;
+      padding: 40px 20px;
+    }
+
+    .center-panel {
+      text-align: center;
+      max-width: 800px;
+    }
+
+    .center-panel h1 {
+      font-size: 2.5rem;
+      margin-bottom: 20px;
+    }
+
+    .center-panel h1 span {
+      color: #a020f0;
+    }
+
+    .lead {
+      font-size: 1.2rem;
+      color: #bdb7cf;
+      margin-bottom: 30px;
+    }
+
+    .intro {
+      margin-top: 30px;
+      color: #bdb7cf;
+      font-size: 1rem;
+    }
 
     /* Responsivo */
     @media (max-width: 768px) {
-      #page-chat .chat-messages {
-        padding: 12px;
+      #page-chat .chat-container {
+        border-radius: 0;
+        height: calc(100vh - 70px);
       }
 
-      .chat-input-area {
-        padding: 12px;
-        gap: 8px;
+      .chat-header {
+        padding: 16px;
+      }
+
+      #page-chat .chat-messages {
+        padding: 16px;
       }
 
       .message {
         max-width: 85%;
+      }
+
+      .chat-input-area {
+        padding: 16px;
+        gap: 8px;
       }
 
       #chat-input {
@@ -227,7 +837,15 @@
       }
 
       .chat-input-area button {
-        padding: 12px 16px;
+        padding: 12px 18px;
+      }
+
+      .center-panel h1 {
+        font-size: 2rem;
+      }
+
+      .lead {
+        font-size: 1rem;
       }
     }
   </style>
