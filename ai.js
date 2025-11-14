@@ -32,6 +32,7 @@ async function checkIAStatus() {
     return false;
   }
 }
+
 window.askClaude = askGroq;
 window.askGroq = askGroq;
 window.checkIAStatus = checkIAStatus;
