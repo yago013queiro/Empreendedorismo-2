@@ -8,38 +8,52 @@ export default async function handler(req, res) {
 
     if (!CLAUDE_API_KEY) {
       return res.status(500).json({
-        error: "CLAUDE_API_KEY não configurada"
+        error: "CLAUDE_API_KEY não configurada. Adicione em Vercel Dashboard → Environment Variables"
       });
     }
 
-    const endpoint = "https://api.anthropic.com/v1/complete";
+    const prompt = req.body.prompt;
+    if (!prompt) {
+      return res.status(400).json({ error: "Campo 'prompt' é obrigatório" });
+    }
 
-    const prompt = `\n\nHuman: ${req.body.prompt}\n\nAssistant:`;
+    // API correta do Claude (v1/messages - modelo atual)
+    const endpoint = "https://api.anthropic.com/v1/messages";
 
     const response = await fetch(endpoint, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
-        "x-api-key": CLAUDE_API_KEY
+        "x-api-key": CLAUDE_API_KEY,
+        "anthropic-version": "2023-06-01"
       },
       body: JSON.stringify({
-        model: "claude-2.1", 
-        prompt,
-        max_tokens_to_sample: 1000,
-        temperature: 0.7
+        model: "claude-3-5-sonnet-20241022",
+        max_tokens: 1024,
+        messages: [
+          {
+            role: "user",
+            content: prompt
+          }
+        ]
       })
     });
 
     const data = await response.json();
 
+    // Log de erro para debugar
     if (!response.ok) {
-      console.error("Erro Claude API:", data);
+      console.error("Erro Claude API:", {
+        status: response.status,
+        data
+      });
       return res.status(response.status).json({
-        error: data?.error?.message || JSON.stringify(data)
+        error: `Erro Claude (${response.status}): ${data?.error?.message || JSON.stringify(data)}`
       });
     }
 
-    const text = data?.completion || data?.completion?.text || data?.output || data?.response || null;
+    // Extrair texto da resposta correta
+    const text = data?.content?.[0]?.text || null;
 
     if (!text) {
       return res.status(200).json({ text: "Desculpe, não consegui gerar uma resposta." });
@@ -48,9 +62,9 @@ export default async function handler(req, res) {
     return res.status(200).json({ text });
 
   } catch (err) {
-    console.error("Erro no servidor:", err);
-    return res.status(500).json({ 
-      error: "Erro no servidor: " + err.message 
+    console.error("Erro no servidor:", err.message);
+    return res.status(500).json({
+      error: `Erro no servidor: ${err.message}`
     });
   }
 }
