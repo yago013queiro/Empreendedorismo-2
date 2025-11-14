@@ -199,3 +199,28 @@ body.light-mode .message.user .bubble{background:linear-gradient(90deg,var(--acc
 .or{display:inline-block;padding:0 10px;color:var(--muted)}
 .center{display:flex;flex-direction:column;align-items:center;justify-content:center}
 .panel{max-width:720px;margin:40px auto;padding:22px;border-radius:12px;background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01))}
+
+/* Centraliza conteúdo da homepage */
+.home-center{display:flex;align-items:center;justify-content:center;min-height:calc(100vh - 140px);padding:40px 16px}
+.center-panel{max-width:880px;background:linear-gradient(180deg, rgba(255,255,255,0.01), rgba(255,255,255,0.00));padding:34px;border-radius:14px;text-align:center;backdrop-filter:blur(6px)}
+.center-panel h1{font-size:2.2rem;margin-bottom:8px;color:var(--white)}
+.center-panel h1 span{color:var(--accent)}
+.center-panel .lead{margin:10px auto 18px;max-width:760px}
+.center-panel .intro{margin-top:18px;color:var(--muted-2)}
+
+.controls{display:inline-flex;gap:8px;margin-top:12px}
+.controls button{padding:8px 12px;border-radius:8px;border:1px solid rgba(255,255,255,0.04);background:transparent;color:var(--muted);cursor:pointer}
+.controls button:hover{border-color:var(--accent);color:var(--white)}
+
+/* Font size helpers applied via JS by changing root font-size */
+@media (max-width:900px){
+  .center-panel h1{font-size:1.6rem}
+  .center-panel .lead{font-size:0.98rem}
+  .home-center{min-height:calc(100vh - 120px);padding:28px 12px}
+}
+
+@media (max-width:480px){
+  .center-panel{padding:20px}
+  .controls{flex-wrap:wrap}
+  .btn.large{padding:12px 18px}
+}

@@ -36,13 +36,22 @@
   <!-- APP -->
   <main id="app">
     <section class="page active" id="page-home" data-page="home">
-      <div class="hero big">
-        <div class="hero-left">
+      <div class="home-center">
+        <div class="center-panel">
           <h1>Bem-vindo(a) à <span>MENTECH.AI</span></h1>
-          <p class="lead">Explicações e ensinamentos com IA Groq</p>
+          <p class="lead">Explicações e ensinamentos com IA Groq — resultados claros e práticos.</p>
           <div class="hero-cta">
             <button class="btn large" onclick="prepareChat()">Começar Chat</button>
+            <button class="btn outline" onclick="goToPage('page-chat')">Ver Chat</button>
           </div>
+
+          <div class="controls" aria-label="Controle de aparência">
+            <button id="inc-font" title="Aumentar fonte">A+</button>
+            <button id="dec-font" title="Diminuir fonte">A-</button>
+            <button id="toggle-theme" title="Trocar tema">🌗</button>
+          </div>
+
+          <p class="intro">Aqui estão algumas áreas que você pode explorar: programação, IA aplicada, negócios e carreira.</p>
         </div>
       </div>
     </section>
