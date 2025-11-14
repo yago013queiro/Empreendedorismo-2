@@ -1,5 +1,4 @@
-
-async function askClaude(prompt) {
+async function askGroq(prompt) {
   try {
     const res = await fetch("/api/ask", {
       method: "POST",
@@ -34,5 +33,5 @@ async function checkIAStatus() {
   }
 }
 
-window.askClaude = askClaude;
+window.askGroq = askGroq;
 window.checkIAStatus = checkIAStatus;
