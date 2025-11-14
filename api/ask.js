@@ -4,11 +4,11 @@ export default async function handler(req, res) {
   }
 
   try {
-    const CLAUDE_API_KEY = process.env.CLAUDE_API_KEY;
+    const GROQ_API_KEY = process.env.GROQ_API_KEY;
 
-    if (!CLAUDE_API_KEY) {
+    if (!GROQ_API_KEY) {
       return res.status(500).json({
-        error: "CLAUDE_API_KEY não configurada. Adicione em Vercel Dashboard → Environment Variables"
+        error: "GROQ_API_KEY não configurada. Adicione em Vercel Dashboard → Environment Variables"
       });
     }
 
@@ -17,43 +17,42 @@ export default async function handler(req, res) {
       return res.status(400).json({ error: "Campo 'prompt' é obrigatório" });
     }
 
-    // API correta do Claude (v1/messages - modelo atual)
-    const endpoint = "https://api.anthropic.com/v1/messages";
+    // API do Groq (grátis, sem limites, super rápido)
+    const endpoint = "https://api.groq.com/openai/v1/chat/completions";
 
     const response = await fetch(endpoint, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
-        "x-api-key": CLAUDE_API_KEY,
-        "anthropic-version": "2023-06-01"
+        "Authorization": `Bearer ${GROQ_API_KEY}`
       },
       body: JSON.stringify({
-        model: "claude-3-5-sonnet-20241022",
-        max_tokens: 1024,
+        model: "mixtral-8x7b-32768",
         messages: [
           {
             role: "user",
             content: prompt
           }
-        ]
+        ],
+        temperature: 0.7,
+        max_tokens: 1024
       })
     });
 
     const data = await response.json();
 
-    // Log de erro para debugar
     if (!response.ok) {
-      console.error("Erro Claude API:", {
+      console.error("Erro Groq API:", {
         status: response.status,
         data
       });
       return res.status(response.status).json({
-        error: `Erro Claude (${response.status}): ${data?.error?.message || JSON.stringify(data)}`
+        error: `Erro Groq (${response.status}): ${data?.error?.message || JSON.stringify(data)}`
       });
     }
 
-    // Extrair texto da resposta correta
-    const text = data?.content?.[0]?.text || null;
+    // Extrair texto da resposta
+    const text = data?.choices?.[0]?.message?.content || null;
 
     if (!text) {
       return res.status(200).json({ text: "Desculpe, não consegui gerar uma resposta." });
