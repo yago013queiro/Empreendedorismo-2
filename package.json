@@ -1,7 +1,7 @@
 {
   "name": "mentech-ai",
   "version": "1.0.0",
-  "description": "Platform de ensino com IA (Gemini)",
+  "description": "Platform de ensino com IA (Claude/Anthropic)",
   "main": "index.js",
   "type": "module",
   "scripts": {

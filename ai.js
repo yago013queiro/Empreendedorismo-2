@@ -1,36 +1,40 @@
-const API_KEY = "SUA_API_KEY_AQUI";  
-const MODEL = "gemini-1.5-flash";
+// Cliente leve - chama o backend (/api/ask) que gerencia a conexão com Claude
+// NUNCA exponha chaves de API no frontend!
 
-async function askGemini(prompt) {
+async function askClaude(prompt) {
   try {
-    const response = await fetch(
-      `https://generativelanguage.googleapis.com/v1beta/models/${MODEL}:generateContent?key=${API_KEY}`,
-      {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          contents: [{ parts: [{ text: prompt }] }]
-        })
-      }
-    );
+    const res = await fetch("/api/ask", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ prompt })
+    });
 
-    const data = await response.json();
-
-    if (data?.candidates?.[0]?.content?.parts?.[0]?.text) {
-      return data.candidates[0].content.parts[0].text;
+    const data = await res.json();
+    
+    if (!res.ok) {
+      console.error("Erro da IA:", data.error);
+      return `❌ ${data.error || "Erro ao conectar à IA"}`;
     }
-
-    return "❌ Erro desconhecido da IA.";
+    
+    return data.text || "❌ Sem resposta da IA.";
   } catch (error) {
-    console.error(error);
-    return "❌ Erro ao conectar à IA.";
+    console.error("Erro ao chamar /api/ask:", error);
+    return "❌ Erro de conexão com o servidor.";
   }
 }
 
 async function checkIAStatus() {
-  const test = await askGemini("ping");
-  return test && !test.includes("❌");
+  try {
+    const r = await fetch("/api/ask", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ prompt: "teste" })
+    });
+    return r.ok;
+  } catch (e) {
+    return false;
+  }
 }
 
-window.askGemini = askGemini;
+window.askClaude = askClaude;
 window.checkIAStatus = checkIAStatus;
