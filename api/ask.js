@@ -1,30 +1,55 @@
-import Groq from "groq-sdk";
+export default async function handler(req, res) {
+  if (req.method !== "POST") {
+    return res.status(405).json({ error: "Método não permitido" });
+  }
 
-const client = new Groq({ apiKey: process.env.GROQ_API_KEY });
-
-const systemPrompt = `
+  try {
+    const GROQ_API_KEY = process.env.GROQ_API_KEY;
+    const systemPrompt = `
 Você é uma assistente educacional focada no aprendizado.
 Explique tudo de forma clara, objetiva e voltada para um estudante.
 Use exemplos simples quando necessário.
 `;
 
-export default async function handler(req, res) {
-  const { prompt } = req.body;
+    if (!GROQ_API_KEY) {
+      console.error("GROQ_API_KEY NÃO CONFIGURADA");
+      return res.status(500).json({
+        error: "GROQ_API_KEY não configurada no Vercel"
+      });
+    }
 
-  try {
-    const completion = await client.chat.completions.create({
-      model: "llama-3.1-70b-versatile",
-      messages: [
-        { role: "system", content: systemPrompt },
-        { role: "user", content: prompt }
-      ]
+    const { prompt } = req.body;
+
+    if (!prompt) {
+      return res.status(400).json({ error: "Campo 'prompt' é obrigatório" });
+    }
+
+    const response = await fetch("https://api.groq.com/openai/v1/chat/completions", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "Authorization": `Bearer ${GROQ_API_KEY}`
+      },
+      body: JSON.stringify({
+        model: "llama-3.1-8b-instant",
+        messages: [{ role: "user", content: prompt }],
+        max_tokens: 400
+      })
     });
 
-    const texto = completion.choices[0].message.content;
+    const data = await response.json();
 
-    res.status(200).json({ output: texto });
+    if (!response.ok) {
+      console.error("Erro da Groq:", data);
+      return res.status(500).json({ error: data.error?.message || "Erro desconhecido da Groq" });
+    }
+
+    const text = data.choices?.[0]?.message?.content || "Erro ao gerar resposta.";
+
+    return res.status(200).json({ text });
 
   } catch (err) {
-    res.status(500).json({ error: "Erro interno da IA" });
+    console.error("ERRO NO SERVIDOR:", err);
+    return res.status(500).json({ error: "Erro interno no servidor." });
   }
 }
