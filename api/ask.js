@@ -4,11 +4,11 @@ export default async function handler(req, res) {
   }
 
   try {
-    const GROQ_API_KEY = process.env.GROQ_API_KEY;
+    const HF_API_KEY = process.env.HF_API_KEY;
 
-    if (!GROQ_API_KEY) {
+    if (!HF_API_KEY) {
       return res.status(500).json({
-        error: "GROQ_API_KEY não configurada. Adicione em Vercel Dashboard → Environment Variables"
+        error: "HF_API_KEY não configurada. Adicione em Vercel Dashboard → Environment Variables"
       });
     }
 
@@ -17,42 +17,45 @@ export default async function handler(req, res) {
       return res.status(400).json({ error: "Campo 'prompt' é obrigatório" });
     }
 
-    // API do Groq (grátis, sem limites, super rápido)
-    const endpoint = "https://api.groq.com/openai/v1/chat/completions";
+    // API Hugging Face (grátis e confiável)
+    const endpoint = "https://api-inference.huggingface.co/models/mistralai/Mistral-7B-Instruct-v0.2";
 
     const response = await fetch(endpoint, {
       method: "POST",
       headers: {
-        "Content-Type": "application/json",
-        "Authorization": `Bearer ${GROQ_API_KEY}`
+        "Authorization": `Bearer ${HF_API_KEY}`,
+        "Content-Type": "application/json"
       },
       body: JSON.stringify({
-        model: "llama-3.1-70b-versatile",
-        messages: [
-          {
-            role: "user",
-            content: prompt
-          }
-        ],
-        temperature: 0.7,
-        max_tokens: 1024
+        inputs: prompt,
+        parameters: {
+          max_new_tokens: 512,
+          temperature: 0.7
+        }
       })
     });
 
     const data = await response.json();
 
     if (!response.ok) {
-      console.error("Erro Groq API:", {
+      console.error("Erro HF API:", {
         status: response.status,
         data
       });
       return res.status(response.status).json({
-        error: `Erro Groq (${response.status}): ${data?.error?.message || JSON.stringify(data)}`
+        error: `Erro IA (${response.status}): ${data?.error || JSON.stringify(data)}`
       });
     }
 
     // Extrair texto da resposta
-    const text = data?.choices?.[0]?.message?.content || null;
+    let text = null;
+    if (Array.isArray(data) && data[0]) {
+      text = data[0]?.generated_text || null;
+      // Remover o prompt da resposta (HF retorna com o prompt incluído)
+      if (text && text.includes(prompt)) {
+        text = text.replace(prompt, "").trim();
+      }
+    }
 
     if (!text) {
       return res.status(200).json({ text: "Desculpe, não consegui gerar uma resposta." });
