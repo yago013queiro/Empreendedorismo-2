@@ -17,8 +17,8 @@ export default async function handler(req, res) {
       return res.status(400).json({ error: "Campo 'prompt' é obrigatório" });
     }
 
-    // API Hugging Face (grátis e confiável)
-    const endpoint = "https://api-inference.huggingface.co/models/mistralai/Mistral-7B-Instruct-v0.2";
+    // Usar o Hugging Face Router (endpoint novo recomendado)
+    const endpoint = "https://router.huggingface.co/hf-inference";
 
     const response = await fetch(endpoint, {
       method: "POST",
@@ -27,6 +27,7 @@ export default async function handler(req, res) {
         "Content-Type": "application/json"
       },
       body: JSON.stringify({
+        model: "mistralai/Mistral-7B-Instruct-v0.2",
         inputs: prompt,
         parameters: {
           max_new_tokens: 512,
@@ -47,14 +48,20 @@ export default async function handler(req, res) {
       });
     }
 
-    // Extrair texto da resposta
+    // Extrair texto da resposta (suportando formatos distintos do router)
     let text = null;
+
     if (Array.isArray(data) && data[0]) {
-      text = data[0]?.generated_text || null;
-      // Remover o prompt da resposta (HF retorna com o prompt incluído)
-      if (text && text.includes(prompt)) {
-        text = text.replace(prompt, "").trim();
-      }
+      text = data[0].generated_text || data[0].text || null;
+    }
+
+    if (!text && data && typeof data === 'object') {
+      text = data.generated_text || data.text || (Array.isArray(data.outputs) && data.outputs[0]?.text) || null;
+    }
+
+    // Se o modelo ecoou o prompt, remover para ficar só a resposta
+    if (text && prompt && text.includes(prompt)) {
+      text = text.replace(prompt, "").trim();
     }
 
     if (!text) {
