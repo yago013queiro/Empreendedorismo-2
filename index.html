@@ -39,7 +39,7 @@
       <div class="hero big">
         <div class="hero-left">
           <h1>Bem-vindo(a) à <span>MENTECH.AI</span></h1>
-          <p class="lead">Explicações e ensinamentos com IA Claude</p>
+          <p class="lead">Explicações e ensinamentos com IA Groq</p>
           <div class="hero-cta">
             <button class="btn large" onclick="prepareChat()">Começar Chat</button>
           </div>
@@ -85,8 +85,8 @@
       messages.appendChild(userMsg);
       input.value = '';
 
-      // Chamar Claude
-      const response = await window.askClaude(prompt);
+      // Chamar Groq
+      const response = await window.askGroq(prompt);
 
       // Adicionar resposta
       const aiMsg = document.createElement('div');
