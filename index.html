@@ -84,7 +84,6 @@
       </section>
     </section>
 
-    <
     <section class="page" id="page-escolha" data-page="escolha">
       <h2>Escolha sua área</h2>
       <p class="section-sub">Cada área leva a um fluxo separado da IA.</p>
@@ -317,6 +316,66 @@ int main() {
   const langImg = document.getElementById('lang-img');
   const langCode = document.getElementById('lang-code');
   const langPoints = document.getElementById('lang-points');
+  const CHAT_STORAGE_KEY = 'mentech-chat-history-v1';
+
+  function appendMessage({ role, text, avatar }) {
+    const messages = document.getElementById('chat-messages');
+    if (!messages) return;
+
+    const msg = document.createElement('div');
+    msg.className = `message ${role}`;
+
+    const avatarNode = document.createElement('div');
+    avatarNode.className = 'avatar-mini';
+    avatarNode.textContent = avatar;
+
+    const bubble = document.createElement('div');
+    bubble.className = 'bubble';
+    bubble.textContent = text;
+
+    msg.appendChild(avatarNode);
+    msg.appendChild(bubble);
+    messages.appendChild(msg);
+    messages.scrollTop = messages.scrollHeight;
+  }
+
+  function saveChatHistory() {
+    const messages = document.getElementById('chat-messages');
+    if (!messages) return;
+
+    const history = [...messages.querySelectorAll('.message')].map((el) => ({
+      role: el.classList.contains('user') ? 'user' : 'ai',
+      avatar: el.querySelector('.avatar-mini')?.textContent || '🤖',
+      text: el.querySelector('.bubble')?.textContent || ''
+    }));
+
+    localStorage.setItem(CHAT_STORAGE_KEY, JSON.stringify(history));
+  }
+
+  function loadChatHistory() {
+    const messages = document.getElementById('chat-messages');
+    if (!messages) return;
+
+    const raw = localStorage.getItem(CHAT_STORAGE_KEY);
+    if (!raw) return;
+
+    try {
+      const history = JSON.parse(raw);
+      if (!Array.isArray(history) || !history.length) return;
+
+      messages.innerHTML = '';
+      history.forEach((item) => {
+        if (!item?.text) return;
+        appendMessage({
+          role: item.role === 'user' ? 'user' : 'ai',
+          text: item.text,
+          avatar: item.avatar || (item.role === 'user' ? '🧑' : '🤖')
+        });
+      });
+    } catch (_) {
+      localStorage.removeItem(CHAT_STORAGE_KEY);
+    }
+  }
 
 
   function goToPage(id){
@@ -392,14 +451,9 @@ int main() {
     if (!prompt) return;
 
     
-    const userMsg = document.createElement('div');
-    userMsg.className = 'message user';
-    userMsg.innerHTML = `<div class="bubble">${prompt}</div>`;
-    messages.appendChild(userMsg);
+    appendMessage({ role: 'user', text: prompt, avatar: '🧑' });
     input.value = '';
-
-    
-    messages.scrollTop = messages.scrollHeight;
+    saveChatHistory();
 
     
     const typingMsg = document.createElement('div');
@@ -422,17 +476,13 @@ int main() {
       typingMsg.remove();
 
      
-      const aiMsg = document.createElement('div');
-      aiMsg.className = 'message ai';
-      aiMsg.innerHTML = `<div class="avatar-mini">🤖</div><div class="bubble">${response}</div>`;
-      messages.appendChild(aiMsg);
+      appendMessage({ role: 'ai', text: response, avatar: '🤖' });
+      saveChatHistory();
 
     } catch (error) {
       typingMsg.remove();
-      const errorMsg = document.createElement('div');
-      errorMsg.className = 'message ai error';
-      errorMsg.innerHTML = `<div class="avatar-mini">⚠️</div><div class="bubble">Desculpe, ocorreu um erro. Tente novamente.</div>`;
-      messages.appendChild(errorMsg);
+      appendMessage({ role: 'ai', text: 'Desculpe, ocorreu um erro. Tente novamente.', avatar: '⚠️' });
+      saveChatHistory();
     }
 
    
@@ -462,7 +512,9 @@ int main() {
 
   function clearChat() {
     const messages = document.getElementById('chat-messages');
-    messages.innerHTML = '<div class="message ai"><div class="avatar-mini">🤖</div><div class="bubble">Chat limpo. Pergunte algo!</div></div>';
+    messages.innerHTML = '';
+    appendMessage({ role: 'ai', text: 'Chat limpo. Pergunte algo!', avatar: '🤖' });
+    saveChatHistory();
   }
 
  
@@ -499,21 +551,13 @@ int main() {
       if (s>12) root.style.fontSize = (s-1)+'px'; 
     });
 
-   
-    const toggle = document.getElementById('toggle-theme');
-    toggle?.addEventListener('click', ()=> {
-      document.body.classList.toggle('light-mode');
-      localStorage.setItem('mt_theme', document.body.classList.contains('light-mode') ? 'light' : 'dark');
-    });
-    if (localStorage.getItem('mt_theme') === 'light') document.body.classList.add('light-mode');
-
-   
     document.getElementById('chat-input')?.addEventListener('keypress', e => { 
       if (e.key === 'Enter') sendMessage(); 
     });
 
     
     updateChips();
+    loadChatHistory();
   });
   </script>
 
@@ -671,6 +715,8 @@ int main() {
       border-radius: 12px;
       line-height: 1.5;
       word-wrap: break-word;
+      white-space: pre-wrap;
+      overflow-wrap: anywhere;
     }
 
     .message.user .bubble {
