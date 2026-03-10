@@ -143,7 +143,14 @@ async function askGroq(prompt) {
     const res = await fetch("/api/ask", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ prompt })
+      body: JSON.stringify({ 
+        prompt,
+        context: {
+          area: state.area,
+          linguagem: state.linguagem,
+          nivel: state.nivel
+        }
+      })
     });
 
     const data = await res.json();

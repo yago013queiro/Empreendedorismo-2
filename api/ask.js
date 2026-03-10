@@ -5,18 +5,27 @@ export default async function handler(req, res) {
 
   try {
     const GROQ_API_KEY = process.env.GROQ_API_KEY;
-    const systemPrompt = `Você é uma assistente educacional focada no aprendizado.
+    const { prompt, context } = req.body;
+
+    let systemPrompt = `Você é uma assistente educacional focada no aprendizado.
 Explique tudo de forma clara, objetiva e voltada para um estudante.
 Use exemplos simples quando necessário.`;
 
-    if (!GROQ_API_KEY) {
-      console.error("GROQ_API_KEY NÃO CONFIGURADA");
-      return res.status(500).json({
-        error: "GROQ_API_KEY não configurada no Vercel"
-      });
+    if (context) {
+      const { area, linguagem, nivel } = context;
+      if (area === 'programacao') {
+        systemPrompt = `Você é um tutor especialista em programação, focado na linguagem ${linguagem || 'C'}.
+O seu aluno está no nível ${nivel === 'faculdade' ? 'Universitário' : 'Ensino Médio'}.
+Adapte sua explicação para esse nível acadêmico. Sempre que possível, mostre pequenos trechos de código comentados.`;
+      } else if (area === 'materias') {
+        systemPrompt = `Você é um professor de suporte escolar para matérias gerais.
+O seu aluno está no nível ${nivel === 'faculdade' ? 'Universitário' : 'Ensino Médio'}.
+Explique os conceitos de forma didática, usando analogias do dia a dia.`;
+      } else if (area === 'estudo') {
+        systemPrompt = `Você é um mentor de técnicas de estudo e produtividade.
+Ajude o aluno (nível ${nivel === 'faculdade' ? 'Universitário' : 'Ensino Médio'}) a organizar seu tempo e entender melhor como aprender.`;
+      }
     }
-
-    const { prompt } = req.body;
 
     if (!prompt) {
       return res.status(400).json({ error: "Campo 'prompt' é obrigatório" });
