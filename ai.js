@@ -168,7 +168,7 @@ async function sendMessage() {
 
   if (!prompt) return;
 
-  // Mensagem do Usuário
+  // Mensagem do Usuário (Texto simples)
   const userMsg = document.createElement('div');
   userMsg.className = 'message user';
   userMsg.innerHTML = `<div class="bubble">${prompt}</div>`;
@@ -181,6 +181,7 @@ async function sendMessage() {
   // Indicador de Digitação sutil
   const typingMsg = document.createElement('div');
   typingMsg.className = 'message ai typing-indicator';
+  typingMsg.innerHTML = '<div class="bubble">Digitando...</div>';
   typingMsg.innerHTML = `<div class="bubble">...</div>`;
   messages.appendChild(typingMsg);
   messages.scrollTo({ top: messages.scrollHeight, behavior: 'smooth' });
@@ -189,9 +190,15 @@ async function sendMessage() {
     const response = await askGroq(prompt);
     typingMsg.remove();
 
+    // Mensagem da IA (Renderizada com Markdown)
     // Mensagem da IA formatada
     const aiMsg = document.createElement('div');
     aiMsg.className = 'message ai';
+    
+    // Usando marked para transformar Markdown em HTML
+    const htmlContent = marked.parse(response);
+    aiMsg.innerHTML = `<div class="bubble">${htmlContent}</div>`;
+    
     
     // Configura o marked para renderizar quebras de linha e tabelas
     marked.setOptions({
@@ -203,6 +210,12 @@ async function sendMessage() {
     aiMsg.innerHTML = `<div class="bubble">${htmlContent}</div>`;
     
     messages.appendChild(aiMsg);
+    
+    // Aplica highlight nos blocos de código
+    aiMsg.querySelectorAll('pre code').forEach((block) => {
+      hljs.highlightElement(block);
+    });
+
     
     // Aplica highlight.js para blocos de código
     aiMsg.querySelectorAll('pre code').forEach((block) => {
@@ -218,6 +231,7 @@ async function sendMessage() {
     typingMsg.remove();
     const errorMsg = document.createElement('div');
     errorMsg.className = 'message ai error';
+    errorMsg.innerHTML = `<div class="bubble">Ocorreu um erro. Tente novamente.</div>`;
     errorMsg.innerHTML = `<div class="bubble">⚠️ Não consegui responder agora. Verifique sua conexão.</div>`;
     messages.appendChild(errorMsg);
   }
