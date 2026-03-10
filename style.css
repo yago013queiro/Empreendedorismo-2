@@ -201,12 +201,69 @@ main#app { padding: 100px 20px 40px; max-width: 1200px; margin: 0 auto; min-heig
 /* Footer */
 .site-footer { text-align: center; padding: 40px; color: var(--text-dim); font-size: 0.85rem; }
 
-/* Responsivo */
-@media (max-width: 768px) {
-  .navbar { padding: 0 20px; }
-  .mini-nav { display: none; }
-  .nivel-grid { grid-template-columns: 1fr; }
-  .message { max-width: 95%; }
-  .home-center h1 { font-size: 2rem; }
-  .chat-container { height: 85vh; }
+/* Indicador de Digitação */
+.message.ai.typing .bubble {
+  background: var(--bg-nav);
+  border: 1px solid var(--border);
+  display: flex;
+  align-items: center;
+}
+
+.typing-dots {
+  display: inline-flex;
+  align-items: center;
+  gap: 2px;
+}
+
+.typing-dots .dot {
+  animation: typing 1.4s infinite ease-in-out;
+}
+
+.typing-dots .dot:nth-child(1) { animation-delay: 0s; }
+.typing-dots .dot:nth-child(2) { animation-delay: 0.2s; }
+.typing-dots .dot:nth-child(3) { animation-delay: 0.4s; }
+
+@keyframes typing {
+  0%, 60%, 100% { opacity: 0.3; }
+  30% { opacity: 1; }
+}
+
+/* Melhorar mensagens de erro */
+.message.ai.error .bubble {
+  background: rgba(239, 68, 68, 0.1);
+  border: 1px solid var(--danger);
+  color: var(--danger);
+}
+
+/* Melhorar hover nos cards */
+.choice-card:hover, .lang-card:hover, .nivel-card:hover {
+  transform: translateY(-8px);
+  border-color: var(--accent);
+  box-shadow: 0 12px 24px rgba(99, 102, 241, 0.15);
+}
+
+/* Melhorar botões do chat */
+.chat-input-area button {
+  background: var(--accent);
+  color: white;
+  border: none;
+  padding: 12px 24px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: 600;
+  transition: 0.3s;
+}
+
+.chat-input-area button:hover {
+  background: var(--accent-hover);
+  transform: translateY(-2px);
+}
+
+.chat-actions .btn.danger {
+  background: var(--danger);
+  color: white;
+}
+
+.chat-actions .btn.danger:hover {
+  background: #dc2626;
 }

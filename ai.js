@@ -143,11 +143,31 @@ async function askGroq(prompt) {
     const res = await fetch("/api/ask", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ 
+      body: JSON.stringify({
         prompt,
         context: {
           area: state.area,
           linguagem: state.linguagem,
+          nivel: state.nivel
+        }
+      })
+    });
+
+    const data = await res.json();
+
+    if (!res.ok) {
+      if (res.status === 401) {
+        return "❌ **Erro de configuração:** A chave da API do Groq não está configurada. Verifique se o arquivo `.env` existe e contém a chave `GROQ_API_KEY`.";
+      }
+      return `❌ **Erro do servidor:** ${data.error || "Erro desconhecido"}`;
+    }
+
+    return data.text || "❌ Sem resposta da IA.";
+  } catch (error) {
+    console.error('Erro na API:', error);
+    return "❌ **Erro de conexão:** Não foi possível conectar ao servidor. Verifique sua conexão com a internet.";
+  }
+}
           nivel: state.nivel
         }
       })
@@ -168,21 +188,28 @@ async function sendMessage() {
 
   if (!prompt) return;
 
-  // Mensagem do Usuário (Texto simples)
+async function sendMessage() {
+  const input = document.getElementById('chat-input');
+  const messages = document.getElementById('chat-messages');
+  const prompt = input.value.trim();
+
+  if (!prompt) return;
+
+  // Mensagem do Usuário
   const userMsg = document.createElement('div');
   userMsg.className = 'message user';
   userMsg.innerHTML = `<div class="bubble">${prompt}</div>`;
   messages.appendChild(userMsg);
-  
+
   input.value = '';
-  // Scroll suave para a nova mensagem
+
+  // Scroll para a nova mensagem
   messages.scrollTo({ top: messages.scrollHeight, behavior: 'smooth' });
 
-  // Indicador de Digitação sutil
+  // Indicador de Digitação
   const typingMsg = document.createElement('div');
-  typingMsg.className = 'message ai typing-indicator';
-  typingMsg.innerHTML = '<div class="bubble">Digitando...</div>';
-  typingMsg.innerHTML = `<div class="bubble">...</div>`;
+  typingMsg.className = 'message ai typing';
+  typingMsg.innerHTML = `<div class="bubble"><span class="typing-dots">Digitando<span class="dot">.</span><span class="dot">.</span><span class="dot">.</span></span></div>`;
   messages.appendChild(typingMsg);
   messages.scrollTo({ top: messages.scrollHeight, behavior: 'smooth' });
 
@@ -190,74 +217,83 @@ async function sendMessage() {
     const response = await askGroq(prompt);
     typingMsg.remove();
 
-    // Mensagem da IA (Renderizada com Markdown)
     // Mensagem da IA formatada
     const aiMsg = document.createElement('div');
     aiMsg.className = 'message ai';
-    
-    // Usando marked para transformar Markdown em HTML
-    const htmlContent = marked.parse(response);
-    aiMsg.innerHTML = `<div class="bubble">${htmlContent}</div>`;
-    
-    
-    // Configura o marked para renderizar quebras de linha e tabelas
+
+    // Configurar marked para melhor formatação
     marked.setOptions({
       breaks: true,
-      gfm: true
+      gfm: true,
+      headerIds: false,
+      mangle: false
     });
 
     const htmlContent = marked.parse(response);
     aiMsg.innerHTML = `<div class="bubble">${htmlContent}</div>`;
-    
+
     messages.appendChild(aiMsg);
-    
-    // Aplica highlight nos blocos de código
+
+    // Aplicar highlight.js nos blocos de código
     aiMsg.querySelectorAll('pre code').forEach((block) => {
       hljs.highlightElement(block);
     });
 
-    
-    // Aplica highlight.js para blocos de código
-    aiMsg.querySelectorAll('pre code').forEach((block) => {
-      hljs.highlightElement(block);
-    });
-
-    // Garante que o scroll vá até o final da mensagem longa
+    // Scroll para o final
     setTimeout(() => {
       messages.scrollTo({ top: messages.scrollHeight, behavior: 'smooth' });
     }, 100);
 
   } catch (error) {
+    console.error('Erro no chat:', error);
     typingMsg.remove();
+
     const errorMsg = document.createElement('div');
     errorMsg.className = 'message ai error';
-    errorMsg.innerHTML = `<div class="bubble">Ocorreu um erro. Tente novamente.</div>`;
-    errorMsg.innerHTML = `<div class="bubble">⚠️ Não consegui responder agora. Verifique sua conexão.</div>`;
+    errorMsg.innerHTML = `<div class="bubble">⚠️ Erro ao conectar com a IA. Verifique sua conexão e tente novamente.</div>`;
     messages.appendChild(errorMsg);
   }
+}
 }
 
 function clearChat() {
   const messages = document.getElementById('chat-messages');
-  messages.innerHTML = '<div class="message ai"><div class="avatar-mini">🤖</div><div class="bubble">Chat limpo. Qual sua dúvida?</div></div>';
+  messages.innerHTML = `
+    <div class="message ai">
+      <div class="bubble">🧹 Chat limpo! Qual sua dúvida sobre ${state.area || 'seus estudos'}?</div>
+    </div>
+  `;
 }
 
 function prepareChat() {
+  // Verificar se área foi escolhida
   if (!state.area) {
-    alert('Escolha antes a área (Programação / Outras matérias / Dicas).');
+    alert('❌ Por favor, escolha uma área primeiro (Programação, Matérias Gerais ou Dicas de Estudo).');
     goToPage('page-escolha');
     return;
   }
+
+  // Verificar linguagem se for programação
   if (state.area === 'programacao' && !state.linguagem) {
-    alert('Escolha a linguagem (C, Java ou Python) antes de usar o chat.');
+    alert('❌ Para programação, escolha uma linguagem (C, Java ou Python) primeiro.');
     goToPage('page-programacao');
     return;
   }
+
+  // Verificar nível
   if (!state.nivel) {
+    alert('❌ Por favor, selecione seu nível de estudo (Ensino Médio ou Faculdade).');
     goToPage('page-nivel');
     return;
   }
+
+  // Tudo OK, ir para o chat
   goToPage('page-chat');
+
+  // Focar no input do chat
+  setTimeout(() => {
+    document.getElementById('chat-input').focus();
+  }, 300);
 }
 
 // --- Controles de Tema e Fonte ---
@@ -295,10 +331,22 @@ document.addEventListener('DOMContentLoaded', () => {
   document.getElementById('inc-font')?.addEventListener('click', () => UI_Controls.changeFontSize(1));
   document.getElementById('dec-font')?.addEventListener('click', () => UI_Controls.changeFontSize(-1));
 
-  // Chat Input
-  document.getElementById('chat-input')?.addEventListener('keypress', e => {
-    if (e.key === 'Enter') sendMessage();
-  });
+  // Chat Input - múltiplos eventos
+  const chatInput = document.getElementById('chat-input');
+  if (chatInput) {
+    chatInput.addEventListener('keypress', e => {
+      if (e.key === 'Enter' && !e.shiftKey) {
+        e.preventDefault();
+        sendMessage();
+      }
+    });
+  }
+
+  // Botão enviar do chat
+  document.querySelector('.chat-input-area button')?.addEventListener('click', sendMessage);
+
+  // Botão limpar chat
+  document.querySelector('.chat-actions .btn.danger')?.addEventListener('click', clearChat);
 
   // Expor funções globais necessárias pelo HTML
   window.goToPage = goToPage;
@@ -312,8 +360,16 @@ document.addEventListener('DOMContentLoaded', () => {
   window.copyCode = copyCode;
   window.sendMessage = sendMessage;
   window.clearChat = clearChat;
-  
+
   // Efeitos Hover
-  window.hoverLang = (el) => { el.style.transform = 'scale(1.03)'; el.style.zIndex = 5; };
-  window.unhoverLang = (el) => { el.style.transform = ''; el.style.zIndex = ''; };
+  window.hoverLang = (el) => {
+    el.style.transform = 'scale(1.03)';
+    el.style.zIndex = 5;
+  };
+  window.unhoverLang = (el) => {
+    el.style.transform = '';
+    el.style.zIndex = '';
+  };
+
+  console.log('MENTECH.AI inicializado com sucesso!');
 });

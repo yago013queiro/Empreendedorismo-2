@@ -216,19 +216,18 @@
 
         <div class="chat-messages" id="chat-messages">
           <div class="message ai">
-            <div class="avatar-mini">🤖</div>
-            <div class="bubble">Olá! Eu sou a MENTECH.AI — Qual sua dúvida?</div>
+            <div class="bubble">👋 Olá! Eu sou a MENTECH.AI, sua assistente de estudos personalizada.<br><br>Escolha uma área de estudo acima e me faça qualquer pergunta! Posso explicar conceitos, dar exemplos de código, resolver dúvidas matemáticas e muito mais.<br><br><strong>💡 Dica:</strong> Seja específico na sua pergunta para uma resposta mais precisa!</div>
           </div>
         </div>
 
         <div class="chat-input-area">
-          <input type="text" id="chat-input" placeholder="Digite sua pergunta..." />
-          <button onclick="sendMessage()">Enviar</button>
+          <input type="text" id="chat-input" placeholder="Digite sua pergunta sobre estudos..." maxlength="500" />
+          <button type="button" onclick="sendMessage()">📤 Enviar</button>
         </div>
 
         <div class="chat-actions">
-          <button class="btn outline" onclick="goToPage('page-escolha')">Escolher novamente</button>
-          <button class="btn danger" onclick="clearChat()">Limpar chat</button>
+          <button class="btn outline" onclick="goToPage('page-escolha')">🔄 Escolher novamente</button>
+          <button class="btn danger" onclick="clearChat()">🗑️ Limpar chat</button>
         </div>
       </div>
     </section>
